@@ -1,0 +1,7 @@
+# Top-level safety net. Each project also has its own .gitignore
+# (sih26016-backend, sih26016-frontend, sih26016-ai-layer) with
+# project-specific patterns (node_modules, __pycache__, .venv, .env, uploads).
+
+.DS_Store
+Thumbs.db
+*.log

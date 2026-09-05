@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: ai_layer
+      POSTGRES_PASSWORD: ai_layer
+      POSTGRES_DB: sih26016
+    ports:
+      # Bound to loopback deliberately. "5432:5432" would listen on every
+      # interface, which on shared venue wifi means anyone on the network
+      # can reach this database — and the demo password is in this file.
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ai_layer -d sih26016"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
