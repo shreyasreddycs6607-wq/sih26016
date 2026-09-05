@@ -1,0 +1,9 @@
+demo_alert_id,demo_case_id,rule,severity,message,detected_on,is_resolved
+DEMO-ALERT-001,DEMO-CASE-003,stage_overdue,critical,Objection period has exceeded the demo SLA,2026-09-05,false
+DEMO-ALERT-002,DEMO-CASE-005,document_missing,high,Ownership proof is missing from the current stage checklist,2026-09-05,false
+DEMO-ALERT-003,DEMO-CASE-006,sia_delay,medium,Social impact assessment hearing record is approaching its deadline,2026-09-05,false
+DEMO-ALERT-004,DEMO-CASE-011,compensation_pending,high,More than 50 percent of awarded demo compensation remains unpaid,2026-09-05,false
+DEMO-ALERT-005,DEMO-CASE-012,rnr_delay,high,R&R entitlement has remained in progress beyond demo SLA,2026-09-05,false
+DEMO-ALERT-006,DEMO-CASE-014,case_stalled,critical,UKP demo case has been stalled for more than 30 days,2026-09-05,false
+DEMO-ALERT-007,DEMO-CASE-001,document_expiry,low,Demo monitoring report is due for refresh,2026-09-05,true
+DEMO-ALERT-008,DEMO-CASE-004,objection_risk,medium,Consent threshold is close to the demo threshold,2026-09-05,false
