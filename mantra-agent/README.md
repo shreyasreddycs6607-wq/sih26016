@@ -59,22 +59,29 @@ into this agent's `.env` as `KIOSK_KEY`. If it's lost, revoke the kiosk
 
 ## Switching to real hardware
 
-1. Install the Mantra MFS100 driver for Windows on the kiosk PC and confirm
-   the scanner is detected (Mantra ships a small test utility with the
-   driver — use it to confirm the device works at all before touching this
-   agent).
-2. Open `device/mfs100.py`. Every block marked **VERIFY** names a specific
-   thing that was written from public documentation, not from Mantra's own
-   SDK headers, because neither was in hand when this was built:
-   - the exact DLL filename and whether it's 32-bit or 64-bit
-   - every function's real signature and calling convention
-   - whether `Init()` needs to be called once or per-capture
-   Mantra's SDK download includes sample code (usually C# or C++) — that
-   sample is the source of truth for all three, not this file's current
-   guesses.
-3. Fix the bindings against that sample, set `MFS100_MODE=real` in `.env`,
-   and re-test the whole enroll-then-login pipeline exactly as under mock
-   mode.
+`device/mfs100.py` talks to the Mantra MFS100 Client Service, not the SDK's
+native DLL directly — see that file's own docstring for why. That service is
+installed and started automatically as part of `MFS100Driver_x.x.x.x.exe`,
+the one installer Mantra ships for this scanner; there is no separate SDK
+download to go find.
+
+1. Run `MFS100Driver_x.x.x.x.exe` on the kiosk PC and plug in the scanner.
+   The installer sets up three things, all visible afterward: the
+   `MFS100.sys` USB driver (Device Manager shows the scanner as "MFS100"),
+   the `MFS100ClientSvc` Windows service (self-hosts a local REST API on
+   `http://127.0.0.1:8004/mfs100/`), and a Mantra RDService install for
+   Aadhaar/UIDAI mode that this project doesn't use.
+2. Confirm the Client Service is actually running and can see the scanner —
+   open `C:\Program Files\Mantra\MFS100\MFS100ClientService\Test\MFS100ClientServiceTest.htm`
+   directly in a browser (no server needed) and click **Get Info**. It
+   should show a serial number, make and model. If it doesn't, this agent's
+   `real` mode won't work either — that test page and this agent hit the
+   exact same local service.
+3. Set `MFS100_MODE=real` in `.env` and start this agent. `GET /health`
+   should report `"connected": true` with the scanner's model and serial.
+4. Re-test the whole enroll-then-login pipeline exactly as under mock mode
+   — enroll a finger through the officer's authenticated Security page,
+   then sign in with it at `/login`'s fingerprint option.
 
 ## Why CORS here is more permissive than the backend's
 

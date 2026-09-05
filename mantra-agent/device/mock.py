@@ -28,6 +28,12 @@ _FIXED_TEMPLATE = "MOCK-MFS100-TEMPLATE-v1"
 class MockFingerprintDevice:
     label = "mock"
 
+    def health(self) -> dict:
+        # Always "connected" — there is no hardware to lose contact with,
+        # and pretending there's a chance of disconnection here would just
+        # be a second way for this file to lie about simulating a scanner.
+        return {"connected": True, "detail": "Mock device — no real scanner attached."}
+
     def capture_template(self, timeout_ms: int) -> str:
         # A small delay so the frontend's "Present your finger…" state is
         # visible for a moment rather than resolving instantly, which

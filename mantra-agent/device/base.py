@@ -28,6 +28,13 @@ class FingerprintDevice(Protocol):
 
     label: str  # shown in /health, e.g. "mock" or "mfs100"
 
+    def health(self) -> dict:
+        """A live, uncached connectivity check — {connected: bool, detail:
+        str, device?: {...}} — never the cheaper "did construction succeed"
+        check, since a device can go from attached to unattached at any
+        point while this agent keeps running."""
+        ...
+
     def capture_template(self, timeout_ms: int) -> str:
         """One fingerprint, base64-encoded, in whatever template format
         this device produces. Raises DeviceError on timeout, no finger, or

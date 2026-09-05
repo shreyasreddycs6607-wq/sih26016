@@ -49,7 +49,17 @@ class LoginRequest(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "device": _device.label, "mode": settings.mfs100_mode}
+    # A live probe, not just "did this process start" — the frontend polls
+    # this to show Scanner Connected / Not Connected, which has to reflect
+    # whether the scanner is attached right now, not whether it was
+    # attached whenever this agent last restarted.
+    device_health = _device.health()
+    return {
+        "status": "ok",
+        "device_label": _device.label,
+        "mode": settings.mfs100_mode,
+        **device_health,
+    }
 
 
 @app.post("/login")
