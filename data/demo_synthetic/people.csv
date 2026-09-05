@@ -1,0 +1,16 @@
+demo_person_id,display_name,village,has_land_title,identity_status
+DEMO-PERSON-001,Demo Landowner 01,Sanoor (CT),true,synthetic
+DEMO-PERSON-002,Demo Landowner 02,Sanoor (CT),true,synthetic
+DEMO-PERSON-003,Demo Landowner 03,Sanoor (CT),true,synthetic
+DEMO-PERSON-004,Demo Landowner 04,Sonnappanahalli,true,synthetic
+DEMO-PERSON-005,Demo Landowner 05,Chikkashinganagutti,true,synthetic
+DEMO-PERSON-006,Demo Landowner 06,Chikkashinganagutti,true,synthetic
+DEMO-PERSON-007,Demo Landowner 07,Yedehalli,true,synthetic
+DEMO-PERSON-008,Demo Landowner 08,Hubblli,true,synthetic
+DEMO-PERSON-009,Demo Landowner 09,Chikkabanavara,true,synthetic
+DEMO-PERSON-010,Demo Landowner 10,Soladevanahalli,true,synthetic
+DEMO-PERSON-011,Demo Landowner 11,Kodathi,true,synthetic
+DEMO-PERSON-012,Demo Landowner 12,Indlavadi,true,synthetic
+DEMO-PERSON-013,Demo Landowner 13,Vijayapura village,true,synthetic
+DEMO-PERSON-014,Demo Landowner 14,Bagalkote village,true,synthetic
+DEMO-PERSON-015,Demo Landowner 15,Bagalkote village,false,synthetic
