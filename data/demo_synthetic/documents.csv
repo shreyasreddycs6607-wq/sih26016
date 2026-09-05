@@ -1,0 +1,13 @@
+demo_document_id,demo_case_id,doc_type,filename,version,is_current,upload_status
+DEMO-DOC-001,DEMO-CASE-001,notification_copy,demo_nh169_notification_001.pdf,1,true,synthetic
+DEMO-DOC-002,DEMO-CASE-001,survey_map,demo_nh169_survey_map_001.pdf,1,true,synthetic
+DEMO-DOC-003,DEMO-CASE-002,ownership_proof,demo_owner_proof_002.pdf,1,true,synthetic
+DEMO-DOC-004,DEMO-CASE-003,objection_form,demo_objection_003.pdf,1,true,synthetic
+DEMO-DOC-005,DEMO-CASE-004,declaration_copy,demo_nh7_declaration_004.pdf,1,true,synthetic
+DEMO-DOC-006,DEMO-CASE-005,land_record,demo_nh748a_rtc_005.pdf,1,true,synthetic
+DEMO-DOC-007,DEMO-CASE-006,sia_report,demo_nh748a_sia_006.pdf,1,true,synthetic
+DEMO-DOC-008,DEMO-CASE-008,award_copy,demo_nh13_award_008.pdf,1,true,synthetic
+DEMO-DOC-009,DEMO-CASE-010,possession_certificate,demo_bda_possession_010.pdf,1,true,synthetic
+DEMO-DOC-010,DEMO-CASE-012,rnr_entitlement_list,demo_bda_rnr_012.pdf,1,true,synthetic
+DEMO-DOC-011,DEMO-CASE-014,rnr_scheme_document,demo_ukp_rnr_014.pdf,1,true,synthetic
+DEMO-DOC-012,DEMO-CASE-015,compensation_assessment,demo_ukp_compensation_015.pdf,1,true,synthetic
