@@ -1,0 +1,16 @@
+demo_case_id,public_project_id,case_number,title,district,taluk,village,stage,status,stage_changed_at,stage_due_on,created_at,consent_threshold_pct
+DEMO-CASE-001,REAL-NH169-UDUPI-2026,KA/UDU/2026/001,NH169 Sanoor parcel acquisition - Demo 01,Udupi,Karkala,Sanoor (CT),possession,active,2026-07-10,2026-08-10,2026-01-15,
+DEMO-CASE-002,REAL-NH169-UDUPI-2026,KA/UDU/2026/002,NH169 Sanoor parcel acquisition - Demo 02,Udupi,Karkala,Sanoor (CT),award,active,2026-08-05,2026-09-15,2026-02-01,
+DEMO-CASE-003,REAL-NH169-UDUPI-2026,KA/UDU/2026/003,NH169 Sanoor parcel acquisition - Demo 03,Udupi,Karkala,Sanoor (CT),objection_period,stalled,2026-08-22,2026-09-05,2026-02-18,
+DEMO-CASE-004,REAL-NH7-BENGALURU-2026,KA/BLR/2026/004,NH7 Sonnappanahalli acquisition - Demo 01,Bengaluru Urban,Bengaluru North,Sonnappanahalli,declaration,active,2026-07-25,2026-09-20,2026-03-12,70
+DEMO-CASE-005,REAL-NH748A-BAGALKOTE-2026,KA/BGK/2026/005,NH748A Bagalkote acquisition - Demo 01,Bagalkote,Multiple,Chikkashinganagutti,land_verification,active,2026-08-12,2026-09-25,2026-05-01,80
+DEMO-CASE-006,REAL-NH748A-BAGALKOTE-2026,KA/BGK/2026/006,NH748A Bagalkote acquisition - Demo 02,Bagalkote,Multiple,Chikkashinganagutti,social_impact_assessment,active,2026-07-20,2026-09-30,2026-04-15,80
+DEMO-CASE-007,REAL-NH748A-BELAGAVI-2026,KA/BLG/2026/007,NH748A Belagavi acquisition - Demo 01,Belagavi,Multiple,Multiple,preliminary_notification,active,2026-08-18,2026-09-18,2026-06-10,
+DEMO-CASE-008,REAL-NH13-SHIVAMOGGA-2026,KA/SHI/2026/008,NH13 Shivamogga acquisition - Demo 01,Shivamogga,Bhadravati,Yedehalli,award,active,2026-07-28,2026-09-12,2026-03-20,
+DEMO-CASE-009,REAL-NH63-4-218-DHARWAD-2026,KA/DHW/2026/009,NH63 Hubballi acquisition - Demo 01,Dharwad,Hubballi,Hubblli,possession,closed,2026-06-30,,2026-01-10,
+DEMO-CASE-010,REAL-BDA-PRR1-BBC6-2026,KA/BLR/2026/010,BDA PRR-1 BBC-6 possession - Demo 01,Bengaluru Urban,Multiple,Chikkabanavara,monitoring,active,2026-08-20,2026-10-01,2025-12-10,
+DEMO-CASE-011,REAL-BDA-PRR1-BBC6-2026,KA/BLR/2026/011,BDA PRR-1 BBC-6 possession - Demo 02,Bengaluru Urban,Multiple,Soladevanahalli,possession,active,2026-08-14,2026-09-10,2025-11-22,
+DEMO-CASE-012,REAL-BDA-PRR1-BBC8-2026,KA/BLR/2026/012,BDA PRR-1 BBC-8 possession - Demo 01,Bengaluru Urban,Multiple,Kodathi,rehabilitation_resettlement,active,2026-07-30,2026-09-30,2025-10-01,
+DEMO-CASE-013,REAL-KHB-SURYANAGAR4-ANEKAL-2013,KA/ANE/2026/013,KHB Suryanagar 4th Phase - Demo historical case,Anekal,Multiple,Indlavadi,monitoring,closed,2026-08-29,,2025-01-10,
+DEMO-CASE-014,REAL-UKP3-2026,KA/UKP/2026/014,UKP Phase III rehabilitation - Demo 01,Vijayapura,Multiple,Multiple,rehabilitation_resettlement,stalled,2026-08-01,2026-09-01,2025-06-15,70
+DEMO-CASE-015,REAL-UKP3-2026,KA/UKP/2026/015,UKP Phase III award - Demo 02,Bagalkote,Multiple,Multiple,award,active,2026-08-10,2026-09-25,2025-08-20,70
