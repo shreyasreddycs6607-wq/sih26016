@@ -1,0 +1,13 @@
+demo_history_id,demo_case_id,from_stage,to_stage,changed_on,note
+DEMO-H-001,DEMO-CASE-001,award,rehabilitation_resettlement,2026-06-15,Demo transition after award review
+DEMO-H-002,DEMO-CASE-001,rehabilitation_resettlement,possession,2026-07-10,Demo R&R completion recorded
+DEMO-H-003,DEMO-CASE-002,declaration,award,2026-08-05,Demo award approved
+DEMO-H-004,DEMO-CASE-003,land_verification,objection_period,2026-08-22,Demo objection window opened
+DEMO-H-005,DEMO-CASE-004,objection_period,declaration,2026-07-25,Demo declaration issued
+DEMO-H-006,DEMO-CASE-005,social_impact_assessment,land_verification,2026-08-12,Demo verification started
+DEMO-H-007,DEMO-CASE-008,declaration,award,2026-07-28,Demo award stage opened
+DEMO-H-008,DEMO-CASE-009,award,possession,2026-06-30,Demo possession completed
+DEMO-H-009,DEMO-CASE-010,rehabilitation_resettlement,possession,2026-08-20,Demo possession confirmed
+DEMO-H-010,DEMO-CASE-012,award,rehabilitation_resettlement,2026-07-30,Demo R&R stage opened
+DEMO-H-011,DEMO-CASE-014,award,rehabilitation_resettlement,2026-08-01,Demo rehabilitation workflow started
+DEMO-H-012,DEMO-CASE-015,declaration,award,2026-08-10,Demo award prepared
