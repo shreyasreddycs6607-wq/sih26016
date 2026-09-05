@@ -1,0 +1,7 @@
+demo_objection_id,demo_case_id,demo_person_id,grounds,status,filed_on,response,responded_on
+DEMO-OBJ-001,DEMO-CASE-003,DEMO-PERSON-003,Disputed market value and crop valuation,under_review,2026-08-23,,
+DEMO-OBJ-002,DEMO-CASE-005,DEMO-PERSON-005,Survey boundary differs from field possession, filed,2026-08-20,,
+DEMO-OBJ-003,DEMO-CASE-006,DEMO-PERSON-006,Requested clarification on SIA findings,resolved,2026-08-10,Clarification issued and hearing minutes uploaded,2026-08-18
+DEMO-OBJ-004,DEMO-CASE-008,DEMO-PERSON-007,Requested alternate access to remaining land,rejected,2026-08-02,Access route retained in engineering plan,2026-08-12
+DEMO-OBJ-005,DEMO-CASE-011,DEMO-PERSON-010,Dispute over possession extent,under_review,2026-08-16,,
+DEMO-OBJ-006,DEMO-CASE-012,DEMO-PERSON-011,Requested higher R&R entitlement,resolved,2026-08-05,Entitlement recalculated under demo policy,2026-08-22
