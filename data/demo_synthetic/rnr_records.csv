@@ -1,0 +1,11 @@
+demo_rnr_id,demo_case_id,demo_person_id,status,entitlement,updated_on
+DEMO-RNR-001,DEMO-CASE-001,DEMO-PERSON-001,completed,House construction assistance and shifting allowance,2026-08-02
+DEMO-RNR-002,DEMO-CASE-002,DEMO-PERSON-002,in_progress,Resettlement plot and subsistence allowance,2026-08-25
+DEMO-RNR-003,DEMO-CASE-003,DEMO-PERSON-003,pending,Rehabilitation package subject to objection outcome,2026-08-24
+DEMO-RNR-004,DEMO-CASE-004,DEMO-PERSON-004,completed,Resettlement assistance,2026-08-20
+DEMO-RNR-005,DEMO-CASE-008,DEMO-PERSON-007,in_progress,House-site assistance and livelihood support,2026-08-28
+DEMO-RNR-006,DEMO-CASE-010,DEMO-PERSON-009,completed,Shifting allowance,2026-08-27
+DEMO-RNR-007,DEMO-CASE-011,DEMO-PERSON-010,disputed,Rehabilitation entitlement under review,2026-08-26
+DEMO-RNR-008,DEMO-CASE-012,DEMO-PERSON-011,in_progress,Resettlement plot and annuity,2026-08-29
+DEMO-RNR-009,DEMO-CASE-014,DEMO-PERSON-013,pending,Family rehabilitation package,2026-08-18
+DEMO-RNR-010,DEMO-CASE-015,DEMO-PERSON-014,in_progress,Livelihood restoration assistance,2026-08-21
