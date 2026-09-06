@@ -21,6 +21,13 @@ POST /capture — one raw capture, for enrollment. The browser forwards
   POST /biometrics/fingerprint/enroll on the backend; this agent never
   talks to that endpoint itself; enrollment is something the signed-in
   officer's own browser session does, not something to run.
+
+POST /stepup — re-confirms an already signed-in officer's identity before
+  one high-impact action (never a login). The browser is already
+  authenticated and already knows who it is, so it fetches the nonce and
+  enrolled template itself from POST /biometrics/fingerprint/stepup/start
+  and hands both straight to this endpoint — no username round trip like
+  /login above.
 """
 
 from fastapi import FastAPI, HTTPException
@@ -45,6 +52,11 @@ _device = get_device(settings.mfs100_mode)
 
 class LoginRequest(BaseModel):
     username: str
+
+
+class StepUpRequest(BaseModel):
+    nonce: str
+    gallery_template_base64: str
 
 
 @app.get("/health")
@@ -81,6 +93,29 @@ async def login(payload: LoginRequest):
 
     try:
         return await backend_client.report_match(challenge["challenge_nonce"], score)
+    except backend_client.BackendError as exc:
+        raise HTTPException(401, str(exc)) from exc
+
+
+@app.post("/stepup")
+async def stepup(payload: StepUpRequest):
+    """Capture, match, report — nothing else. The browser already did the
+    part /login's own challenge fetch does (it knows who it is and already
+    holds the enrolled template), so this is the fingerprint half of
+    face_stepup's job: prove a fresh scan matches, right now, for one
+    action."""
+    if not settings.kiosk_key:
+        raise HTTPException(500, "This agent has no kiosk key configured — see .env.example.")
+
+    try:
+        fresh_template = _device.capture_template(settings.capture_timeout_ms)
+    except DeviceError as exc:
+        raise HTTPException(422, str(exc)) from exc
+
+    score = _device.match(payload.gallery_template_base64, fresh_template)
+
+    try:
+        return await backend_client.report_stepup(payload.nonce, score)
     except backend_client.BackendError as exc:
         raise HTTPException(401, str(exc)) from exc
 

@@ -63,6 +63,30 @@ async def report_match(challenge_nonce: str, score: int) -> dict:
     return resp.json()
 
 
+async def report_stepup(nonce: str, score: int) -> dict:
+    """{stepup_token, expires_in_seconds} on a genuine match, or raises
+    BackendError. Same shape as report_match, but for confirming an
+    already-signed-in officer's identity before one action, not for
+    logging in — there is no username here, only the nonce the officer's
+    own browser already fetched from POST
+    /biometrics/fingerprint/stepup/start."""
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        try:
+            resp = await client.post(
+                f"{settings.backend_url}/biometrics/fingerprint/stepup/report",
+                json={"nonce": nonce, "score": score},
+                headers=_headers(),
+            )
+        except httpx.RequestError as exc:
+            raise BackendError(
+                "Could not reach the Bhoomimitra server. Check this kiosk's network connection."
+            ) from exc
+
+    if resp.status_code != 200:
+        raise BackendError(_detail(resp) or "Fingerprint not recognised.")
+    return resp.json()
+
+
 def _detail(resp: httpx.Response) -> str | None:
     try:
         body = resp.json()
