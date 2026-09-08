@@ -43,6 +43,7 @@ app = FastAPI(title="Bhoomimitra Mantra Kiosk Agent")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
+    allow_origin_regex=settings.cors_origin_regex,
     allow_methods=["POST"],
     allow_headers=["Content-Type"],
 )

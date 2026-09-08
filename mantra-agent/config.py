@@ -40,5 +40,15 @@ class Settings(BaseSettings):
     def cors_origins(self) -> list[str]:
         return [origin.strip() for origin in self.allowed_origins.split(",") if origin.strip()]
 
+    # Vite picks the next free port when its default is taken, so the exact
+    # dev-server port varies run to run — matched here instead of chasing it
+    # in allowed_origins on every restart. Widening who may *ask* this agent
+    # to act isn't widening what they can get: per allowed_origins' own
+    # comment above, every action is already gated by the kiosk key and the
+    # backend's challenge. A deployed production frontend is never on
+    # localhost, so it still has to be listed explicitly in allowed_origins.
+    @property
+    def cors_origin_regex(self) -> str:
+        return r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"
 
 settings = Settings()
