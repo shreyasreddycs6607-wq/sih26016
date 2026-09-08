@@ -65,7 +65,8 @@ installed and started automatically as part of `MFS100Driver_x.x.x.x.exe`,
 the one installer Mantra ships for this scanner; there is no separate SDK
 download to go find.
 
-1. Run `MFS100Driver_x.x.x.x.exe` on the kiosk PC and plug in the scanner.
+1. Run `driver/mfs100driver-9.2.0.0.exe` (bundled in this repo — no need to
+   go find it on Mantra's site) on the kiosk PC and plug in the scanner.
    The installer sets up three things, all visible afterward: the
    `MFS100.sys` USB driver (Device Manager shows the scanner as "MFS100"),
    the `MFS100ClientSvc` Windows service (self-hosts a local REST API on
