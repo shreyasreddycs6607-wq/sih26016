@@ -1,7 +1,0 @@
-__pycache__/
-*.pyc
-.venv/
-venv/
-
-# Never commit: holds this kiosk's bearer key.
-.env
