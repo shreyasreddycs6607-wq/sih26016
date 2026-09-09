@@ -2,6 +2,21 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 DEV_SECRET_KEY = "dev-only-insecure-key-set-SECRET_KEY-before-any-shared-deployment"
 
+# A valid Fernet key (32 url-safe base64 bytes), committed in the clear on
+# purpose — same reasoning as DEV_SECRET_KEY. See app.services.crypto's
+# module docstring for why this is not enforced at production boot the way
+# SECRET_KEY is.
+DEV_ENCRYPTION_KEY = "3mMvGVbPVYmcGGVjsUw4-opIrxxCRaKwyYi3fRd1STE="
+
+# A real VAPID (RFC 8292) keypair for the push notification channel,
+# committed in the clear for the same reason as the two above: unlike a
+# Twilio credential, there is no vendor account behind this to be misused —
+# it only lets its holder sign push messages as this app to whoever has
+# subscribed. `docker compose up` works with push out of the box; set a
+# deployment's own pair in production the same way SECRET_KEY is.
+DEV_VAPID_PRIVATE_KEY = "yMkRYUMaZ3ZzysLAfNt9XEacBzOzhsf3NyIvEwQAwuo"
+DEV_VAPID_PUBLIC_KEY = "BIdB0ByQ1rpVn0IiuSl5eia629Wcqbrx0EOlcBzFnoi6ZV9ydFOMvwfWSdAGhh60DDyrQdQjav3bmq4zb79eDGw"
+
 
 class Settings(BaseSettings):
     environment: str = "development"
@@ -9,19 +24,18 @@ class Settings(BaseSettings):
     frontend_origin: str = "http://localhost:5173"
     upload_dir: str = "/app/uploads"
     secret_key: str = DEV_SECRET_KEY
+    encryption_key: str = DEV_ENCRYPTION_KEY
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 12 * 60
     max_upload_bytes: int = 10 * 1024 * 1024
     land_records_provider: str = "mock"
     # "mock" (default) logs instead of sending — see
     # app.integrations.messaging for the WhatsApp/email provider seam.
-    # "live" sends WhatsApp via Twilio and email via SMTP; see
+    # "live" sends SMS via Twilio and email via SMTP; see
     # app.integrations.messaging.live for the credential vars it reads.
     notification_provider: str = "mock"
 
-    # Twilio WhatsApp — used only when notification_provider="live".
-    # twilio_whatsapp_from is Twilio's own number in "whatsapp:+1415..."
-    # form (the sandbox number while testing), not the recipient's.
+    # Twilio — used only when notification_provider="live".
     # twilio_account_sid is always required — it's what scopes either
     # credential below to one account. Auth Token is Twilio's original,
     # full-access master credential; an API Key (SID starting "SK" + its
@@ -31,7 +45,27 @@ class Settings(BaseSettings):
     twilio_auth_token: str = ""
     twilio_api_key_sid: str = ""
     twilio_api_key_secret: str = ""
+    # A Twilio phone number with SMS capability, e.g. "+14155551234" — the
+    # channel app.services.landowner_notify actually sends citizen
+    # notifications on. Sending to an Indian number needs that number's
+    # carrier/DLT registration sorted on Twilio's side first; an
+    # unregistered sender typically gets silently filtered rather than
+    # bounced, which reads as "nothing happened" rather than an error here.
+    twilio_sms_from: str = ""
+    # Twilio WhatsApp sender, "whatsapp:+1415..." form — send_whatsapp still
+    # works if anything calls it directly, but nothing in this codebase does
+    # anymore; kept for the one Twilio account to cover both channels
+    # without a second vendor integration.
     twilio_whatsapp_from: str = ""
+
+    # Web Push — read regardless of notification_provider, since VAPID has
+    # no "mock vs live" account distinction to switch on: it either signs
+    # correctly or it doesn't. vapid_claims_email is the "sub" claim RFC
+    # 8292 requires — browser push services use it to contact the sender if
+    # something's misbehaving; any real mailbox works.
+    vapid_private_key: str = DEV_VAPID_PRIVATE_KEY
+    vapid_public_key: str = DEV_VAPID_PUBLIC_KEY
+    vapid_claims_email: str = "admin@bhoomimitra.gov.in"
 
     # SMTP email — used only when notification_provider="live".
     smtp_host: str = ""
