@@ -1095,6 +1095,10 @@ class NotificationSubscription(Base):
     # request, not the schema.
     whatsapp_number: Mapped[str | None] = mapped_column(String(15), nullable=True)
     email: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    # JSON-serialised browser PushSubscription (endpoint + p256dh/auth keys)
+    # from the Push API — see migration 0022. Opaque to this app, handed to
+    # pywebpush as-is at send time.
+    push_subscription: Mapped[str | None] = mapped_column(Text, nullable=True)
     # Required before a row is ever created — see the route. Stored as the
     # moment consent was given, not a bare boolean, so there is a timestamp
     # to point to if anyone ever asks when and whether it was given.
@@ -1109,7 +1113,7 @@ class NotificationSubscription(Base):
 class NotificationLog(Base):
     """One send attempt, on one channel, to one recipient — the record
     app.services.landowner_notify.notify_landowner writes every time it
-    tries WhatsApp or email against a subscription. A ledger, not a status
+    tries SMS or email against a subscription. A ledger, not a status
     column on the subscription: one subscription lives through many
     notification events (a preliminary notification, then a declaration,
     then a status update), and each has to be answerable for on its own,

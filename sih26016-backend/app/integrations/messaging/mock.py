@@ -10,6 +10,7 @@ project holds a WhatsApp Business API or SMTP credential it does not have.
 import logging
 
 from app.integrations.messaging.base import MessagingUnavailable, ProviderInfo
+from app.integrations.messaging.push import send_push_notification
 
 # A deliberate, documented way to demonstrate the failure path in a demo
 # without a real provider ever actually failing — put "faildemo" anywhere
@@ -18,6 +19,7 @@ from app.integrations.messaging.base import MessagingUnavailable, ProviderInfo
 # real address is never affected.
 _FAIL_EMAIL_MARKER = "faildemo"
 _FAIL_WHATSAPP_NUMBER = "0000000000"
+_FAIL_SMS_NUMBER = "0000000000"
 
 logger = logging.getLogger("bhoomimitra.messaging")
 logger.setLevel(logging.INFO)
@@ -36,6 +38,12 @@ if not logger.handlers:
 class MockMessagingProvider:
     info = ProviderInfo(key="mock", label="Mock notification log (simulated)", is_live=False)
 
+    def send_sms(self, to: str, message: str) -> None:
+        if to.strip() == _FAIL_SMS_NUMBER:
+            logger.info("[MOCK SMS] to=%s FAILED (simulated)", to)
+            raise MessagingUnavailable("Simulated SMS failure for testing.")
+        logger.info("[MOCK SMS] to=%s message=%r", to, message)
+
     def send_whatsapp(self, to: str, message: str) -> None:
         if to.strip() == _FAIL_WHATSAPP_NUMBER:
             logger.info("[MOCK WHATSAPP] to=%s FAILED (simulated)", to)
@@ -47,3 +55,8 @@ class MockMessagingProvider:
             logger.info("[MOCK EMAIL] to=%s FAILED (simulated)", to)
             raise MessagingUnavailable("Simulated email failure for testing.")
         logger.info("[MOCK EMAIL] to=%s subject=%r body=%r", to, subject, body)
+
+    def send_push(self, subscription_json: str, title: str, body: str) -> None:
+        # Genuinely sends — see push.py's module docstring for why there is
+        # no simulated version of this one channel.
+        send_push_notification(subscription_json, title, body)

@@ -1,5 +1,13 @@
 """notifyLandowner — the one place a message actually goes out to a citizen
-who subscribed on the public Notices page, over WhatsApp, email, or both.
+who subscribed on the public Notices page, over SMS, email, browser push,
+or any mix of the three.
+
+SMS over WhatsApp: WhatsApp needed a recipient to have first messaged the
+Twilio sandbox number (or, in production, opted into a WhatsApp Business
+template) before this project could reach them — a real barrier for a
+citizen who has never heard of BhoomiMitra. Plain SMS delivers to any phone
+number with no opt-in dance, at the cost of losing WhatsApp's read receipts
+and rich formatting, which this notification never used anyway.
 
 Both callers — POST /notices/subscribe (an immediate "here's where your
 land stands today") and POST /notices/register's issue_notice (a real
@@ -10,13 +18,14 @@ whether a channel is mocked; that's this file's job and
 app.integrations.messaging's.
 """
 
+import json
 from datetime import date
 
 from sqlalchemy.orm import Session
 
 from app.core.enums import NotificationChannel, NotificationLogStatus
 from app.integrations import messaging
-from app.models import NotificationLog, NotificationSubscription, Parcel, Project
+from app.models import Case, NotificationLog, NotificationSubscription, Parcel, Project
 
 # The three events this feature knows about — see the module docstring in
 # app.models.tables.NotificationLog for why this is plain text, not an
@@ -82,9 +91,9 @@ def notify_landowner(
         if subscription.whatsapp_number:
             logs.append(
                 _send_one(
-                    db, provider, parcel, NotificationChannel.WHATSAPP,
+                    db, provider, parcel, NotificationChannel.SMS,
                     subscription.whatsapp_number, notification_type,
-                    send=lambda to: provider.send_whatsapp(to, body),
+                    send=lambda to: provider.send_sms(to, body),
                 )
             )
         if subscription.email:
@@ -93,6 +102,23 @@ def notify_landowner(
                     db, provider, parcel, NotificationChannel.EMAIL,
                     subscription.email, notification_type,
                     send=lambda to: provider.send_email(to, subject, body),
+                )
+            )
+        if subscription.push_subscription:
+            # NotificationLog.recipient is String(255); a real push endpoint
+            # URL can run past that on some browsers, so this stores a short
+            # identifying tail of the endpoint rather than the full
+            # subscription — enough to tell one subscription's log rows
+            # apart from another's.
+            endpoint = json.loads(subscription.push_subscription).get("endpoint", "")
+            recipient_label = f"browser:…{endpoint[-40:]}"
+            logs.append(
+                _send_one(
+                    db, provider, parcel, NotificationChannel.PUSH,
+                    recipient_label, notification_type,
+                    send=lambda to, sub=subscription.push_subscription: provider.send_push(
+                        sub, subject, body
+                    ),
                 )
             )
 
@@ -107,22 +133,29 @@ def _send_one(db, provider, parcel, channel, recipient, notification_type, *, se
     except messaging.MessagingUnavailable:
         status = NotificationLogStatus.FAILED
 
+    # Push is the one channel that genuinely sends regardless of
+    # provider.info.is_live — see messaging/push.py's docstring for why
+    # there is no simulated version of it. Deriving is_mock from the
+    # provider alone would mislabel a real push as "not actually
+    # delivered" whenever SMS/email are still mocked.
+    is_mock = False if channel is NotificationChannel.PUSH else not provider.info.is_live
+
     log = NotificationLog(
         parcel_id=parcel.id,
         channel=channel,
         notification_type=notification_type,
         recipient=recipient,
         status=status,
-        is_mock=not provider.info.is_live,
+        is_mock=is_mock,
     )
     db.add(log)
     return log
 
 
-def notify_account_holder_whatsapp(db: Session, parcel: Parcel, phone: str, body: str) -> NotificationLog:
-    """WhatsApp a case event straight to a logged-in landowner's own phone
-    number (Person.phone), independent of the anonymous /notices/subscribe
-    flow above.
+def notify_account_holder_sms(db: Session, parcel: Parcel, phone: str, body: str) -> NotificationLog:
+    """SMS a case event straight to a logged-in landowner's own phone number
+    (Person.phone), independent of the anonymous /notices/subscribe flow
+    above.
 
     Called from app.services.notify's notify_case_landowners and
     notify_objection_filer — the two places a landowner with a real
@@ -140,9 +173,9 @@ def notify_account_holder_whatsapp(db: Session, parcel: Parcel, phone: str, body
     """
     provider = messaging.get_provider()
     return _send_one(
-        db, provider, parcel, NotificationChannel.WHATSAPP,
+        db, provider, parcel, NotificationChannel.SMS,
         phone, STATUS_UPDATE,
-        send=lambda to: provider.send_whatsapp(to, body),
+        send=lambda to: provider.send_sms(to, body),
     )
 
 
