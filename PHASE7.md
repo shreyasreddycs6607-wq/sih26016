@@ -32,8 +32,7 @@ bulk adds, downgrade with more than the free limit, every Pro feature gated, ent
 
 ## Verification status
 
-- CI built Phases 2-5 successfully. Phase 6 failed its first compile on one wrong import (fixed); the run after it is the first full Firebase compile. Phase 7 adds code that has never been compiled
-  by anything: Glance widgets/tile, Play Billing, DataStore entitlement, the Gradle signing block, the baseline profile.
+- CI (GitHub Actions) is green for every phase, including Phase 7: unit tests, `assembleDebug` and the unsigned `assembleRelease` (R8 + lint vital) all pass. The only Phase 7 compile error was Glance's `actionStartActivity` (fixed). CI proves it compiles and the domain tests pass, not that it works on a phone.
 - Locally verified: the domain code, view models and all screens type-check against Compose; 113 unit tests pass.
 - Nothing in this project has been run on a phone by me or in CI (CI does not launch the app). **The first real test is yours.**
 
