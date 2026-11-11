@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FocusForce</string>
+    <string name="app_wordmark">FOCUSFORCE</string>
+    <string name="accessibility_service_description">FocusForce notices which app has just opened so it can show your hero\'s block screen over the apps you chose to block. It does not read what is on your screen.</string>
+
+    <!-- Common -->
+    <string name="action_back">Back</string>
+    <string name="action_continue">Continue</string>
+    <string name="selected">Selected</string>
+    <string name="duration_hm">%1$dh %2$02dm</string>
+
+    <!-- Tabs -->
+    <string name="tab_home">Home</string>
+    <string name="tab_focus">Focus</string>
+    <string name="tab_insights">Insights</string>
+    <string name="tab_blocks">Blocks</string>
+    <string name="tab_profile">Profile</string>
+    <string name="phase_2">Arrives with usage tracking (Phase 2)</string>
+    <string name="phase_3">Arrives with the blocking engine (Phase 3)</string>
+    <string name="phase_4">Arrives with limits, schedules and focus (Phase 4)</string>
+    <string name="focus_desc">Pomodoro sessions that block distracting apps while they run, with a power-up when you start and a celebration when you finish.</string>
+    <string-array name="focus_bullets">
+        <item>Custom Pomodoro lengths with a long-break cycle</item>
+        <item>Named profiles: Study, Sleep, Work, Family</item>
+        <item>Daily limits with warnings at 80 and 100 percent of your limit</item>
+    </string-array>
+    <string name="insights_desc">Daily, weekly and monthly charts of where your time goes, drawn in your hero\'s style.</string>
+    <string-array name="insights_bullets">
+        <item>Per-app drill-down and launches / unlocks</item>
+        <item>Productive vs distracting categories you can edit</item>
+        <item>Peak-hours heat map and the villain of the week</item>
+    </string-array>
+    <string name="blocks_desc">Pick the apps your hero guards. A full-screen block screen appears when you open one.</string>
+    <string-array name="blocks_bullets">
+        <item>Searchable app picker with select-by-category</item>
+        <item>Optional limited 5-minute pass, or strict mode with no override</item>
+        <item>Keeps working after reboot and on battery-saving phones</item>
+    </string-array>
+
+    <!-- Heroes -->
+    <string name="hero_vector_name">Vector</string>
+    <string name="hero_vector_title">The Engineer</string>
+    <string name="hero_vector_tagline">Precision. Data. Control. Vector turns your screen time into a live heads-up display.</string>
+    <string name="hero_vector_traits">HUD gauges · scan-line boot-ups · monospace readouts</string>
+    <string name="hero_noctis_name">Noctis</string>
+    <string name="hero_noctis_title">The Night Sentinel</string>
+    <string name="hero_noctis_tagline">Calm in the dark. Noctis guards your evenings and your sleep, one moon phase at a time.</string>
+    <string name="hero_noctis_traits">Moon phases · drifting stars · night schedules</string>
+    <string name="hero_dash_name">Dash</string>
+    <string name="hero_dash_title">The Courier</string>
+    <string name="hero_dash_tagline">Fast, loud, unstoppable! Dash turns every focus streak into a comic-book headline.</string>
+    <string name="hero_dash_traits">Comic panels · speed lines · action bursts</string>
+    <string name="mascot_description">%1$s, your FocusForce hero</string>
+    <string name="hero_switch_spoken">Switch hero to %1$s</string>
+
+    <!-- Onboarding -->
+    <string name="welcome_tagline">Your attention is your superpower. Time to train it.</string>
+    <string name="welcome_begin">Begin</string>
+    <string name="hero_step_title">Choose your hero</string>
+    <string name="hero_step_hint">Swipe to preview. The whole app changes with your pick, and you can switch any time.</string>
+    <string name="hero_choose">Choose %1$s</string>
+    <string name="goals_title">What are you training for?</string>
+    <string name="goals_hint">Pick everything that applies. This shapes the missions and schedules we suggest.</string>
+    <string name="goals_pick_one">Pick at least one to continue.</string>
+    <string name="goal_study">Study</string>
+    <string name="goal_study_desc">Deep, uninterrupted study blocks</string>
+    <string name="goal_work">Work</string>
+    <string name="goal_work_desc">Protect focus during work hours</string>
+    <string name="goal_sleep">Sleep</string>
+    <string name="goal_sleep_desc">Wind down and stay off the phone at night</string>
+    <string name="goal_social">Less social media</string>
+    <string name="goal_social_desc">Spend less time in feeds and short videos</string>
+    <string name="daily_goal_title">Daily screen-time goal</string>
+    <string name="daily_goal_hint">How much total screen time do you want on a good day?</string>
+    <string name="daily_goal_spoken">%1$d hours %2$d minutes</string>
+    <string name="daily_goal_change_later">You can change this any time in Profile.</string>
+
+    <!-- Permission flow -->
+    <string name="perm_intro_title">Power up your hero</string>
+    <string name="perm_intro_body">FocusForce needs %1$d permissions to work. We will explain each one before Android asks, and you can skip any of them.</string>
+    <string name="perm_intro_privacy">Everything runs on your device. Your usage data is never uploaded, and nothing on your screen is recorded or sent anywhere.</string>
+    <string name="perm_intro_start">Start setup</string>
+    <string name="perm_intro_later">Do this later</string>
+    <string name="perm_step_label">Permission %1$d of %2$d</string>
+    <string name="perm_why_label">Why we ask</string>
+    <string name="perm_never_label">What we never do</string>
+    <string name="perm_granted">Granted</string>
+    <string name="perm_not_granted">Not granted</string>
+    <string name="perm_required_badge">Needed for blocking</string>
+    <string name="perm_skip">Not now</string>
+    <string name="perm_skip_essential">Skip (blocking will not work without this)</string>
+    <string name="perm_open_settings">Open settings</string>
+    <string name="perm_manage">Manage</string>
+
+    <string name="perm_usage_title">Usage access</string>
+    <string name="perm_usage_why">Lets FocusForce see how long each app is on screen, how often you open it and how often you unlock your phone. This powers your totals, charts, limits and the weekly villain.</string>
+    <string name="perm_usage_never">We never see what you do inside apps. Usage numbers stay on this device and are never uploaded.</string>
+    <string name="perm_usage_action">Open Usage access settings</string>
+
+    <string name="perm_overlay_title">Display over other apps</string>
+    <string name="perm_overlay_why">Lets your hero\'s full-screen block screen appear on top of an app you chose to block.</string>
+    <string name="perm_overlay_never">We only draw our own block screen, and only when you open a blocked app. We never draw over banking or other apps you did not choose.</string>
+    <string name="perm_overlay_action">Open overlay settings</string>
+
+    <string name="perm_accessibility_title">Accessibility service</string>
+    <string name="perm_accessibility_disclosure_label">Prominent disclosure</string>
+    <string name="perm_accessibility_disclosure">FocusForce uses Android\'s Accessibility Service for one purpose: to notice which app or window has just come to the front, so it can show the block screen over apps you chose to block.\n\nThis version installs the service but does not yet act on any event. Features that come later, and only if you turn them on, add: detecting short-video sections inside apps, and reading the address of supported browsers to block websites on your list.\n\nFocusForce never reads passwords, messages or anything you type. It never takes screenshots and never stores or sends screen content. Everything is processed on your device.\n\nYou can turn it off any time in Settings, Accessibility.</string>
+    <string name="perm_accessibility_why">Detecting the app in front is the most reliable way to block on every Android version. Without it we fall back to polling Usage access, which is slower and less dependable on some phones.</string>
+    <string name="perm_accessibility_never">We do not collect, log, store or transmit what is on your screen, and the service is not used for anything except the blocking features you enable.</string>
+    <string name="perm_accessibility_action">I agree. Open Accessibility settings</string>
+
+    <string name="perm_notifications_title">Notifications</string>
+    <string name="perm_notifications_why">Shows your focus-session timer, limit warnings and gentle break reminders. Android also requires a visible notification while the blocker is running.</string>
+    <string name="perm_notifications_never">No marketing and no spam. Notifications are only about your own focus and limits.</string>
+    <string name="perm_notifications_action">Allow notifications</string>
+    <string name="perm_notifications_open_settings">Open notification settings</string>
+
+    <string name="perm_battery_title">Battery optimization</string>
+    <string name="perm_battery_why">Many phones stop background apps to save power, which would switch your blocker off. Exempting FocusForce keeps it running.</string>
+    <string name="perm_battery_never">This does not read anything and does not give us extra data. It only stops the system from pausing FocusForce. Some phones also need the extra steps listed under device tips.</string>
+    <string name="perm_battery_action">Allow unrestricted battery use</string>
+
+    <string name="perm_alarms_title">Alarms and reminders</string>
+    <string name="perm_alarms_why">Lets focus schedules start and end exactly on time, for example your Sleep profile at 10:00 pm.</string>
+    <string name="perm_alarms_never">Used only for the schedules you create. Nothing else is scheduled.</string>
+    <string name="perm_alarms_action">Open alarm settings</string>
+
+    <!-- Permission status screen -->
+    <string name="permissions_title">Permissions</string>
+    <string name="permissions_intro">Live status. This page refreshes when you come back from Settings.</string>
+    <string name="open_app_settings">Open FocusForce app settings</string>
+    <string name="oem_section_title">Keep FocusForce running</string>
+    <string name="oem_section_intro">Some phone makers add extra battery managers that stop blockers. Menu names change between software versions, so treat these as a guide.</string>
+    <string name="oem_your_device">Your device</string>
+    <string name="oem_xiaomi">Xiaomi, Redmi, POCO</string>
+    <string name="oem_oppo">Oppo</string>
+    <string name="oem_vivo">Vivo, iQOO</string>
+    <string name="oem_samsung">Samsung</string>
+    <string name="oem_realme">realme</string>
+    <string name="oem_generic_title">All Android phones</string>
+    <string name="oem_generic_tip">Open FocusForce app settings, then Permissions, and turn off the option that removes permissions or pauses app activity when the app is unused. Android can otherwise take back Usage access and Accessibility after a few months.</string>
+    <string-array name="oem_tips_xiaomi">
+        <item>Settings, Apps, Manage apps, FocusForce: turn on Autostart.</item>
+        <item>On the same page set Battery saver to No restrictions.</item>
+        <item>Under Other permissions, allow Display pop-up windows and Display pop-up windows while running in the background.</item>
+        <item>Open Recent apps, long-press the FocusForce card and choose Lock so it is not cleared.</item>
+    </string-array>
+    <string-array name="oem_tips_oppo">
+        <item>Settings, Apps, App management, FocusForce, Battery usage: allow background activity.</item>
+        <item>Turn on Auto launch (also called Startup manager) for FocusForce.</item>
+        <item>Allow Floating windows if the option is listed under permissions.</item>
+        <item>Open Recent apps and lock the FocusForce card.</item>
+    </string-array>
+    <string-array name="oem_tips_vivo">
+        <item>Settings, Battery, Background power consumption management: set FocusForce to Allow high background power consumption.</item>
+        <item>i Manager, App manager, Autostart: turn on FocusForce.</item>
+        <item>Settings, Apps, Permissions: allow Display over other apps and Pop-ups while in background.</item>
+        <item>Open Recent apps and lock the FocusForce card.</item>
+    </string-array>
+    <string-array name="oem_tips_samsung">
+        <item>Settings, Battery, Background usage limits: add FocusForce to Never sleeping apps and remove it from Sleeping or Deep sleeping apps.</item>
+        <item>Settings, Apps, FocusForce, Battery: choose Unrestricted.</item>
+        <item>Settings, Apps, FocusForce: turn off Pause app activity if unused.</item>
+        <item>Turn off Put unused apps to sleep in Battery settings.</item>
+    </string-array>
+    <string-array name="oem_tips_realme">
+        <item>Settings, App management, App list, FocusForce, Battery usage: allow background activity.</item>
+        <item>Turn on Auto launch for FocusForce.</item>
+        <item>Allow Floating windows under permissions.</item>
+        <item>Open Recent apps and lock the FocusForce card.</item>
+    </string-array>
+
+    <!-- Home / Profile -->
+    <string name="home_greeting">Welcome back, recruit</string>
+    <string name="home_readiness_title">Setup readiness</string>
+    <string name="home_readiness_ring_label">ready</string>
+    <string name="home_readiness_spoken">%1$d of %2$d permissions granted</string>
+    <string name="home_readiness_done">Your hero has everything it needs.</string>
+    <string name="home_readiness_todo">Some permissions are still missing. Blocking and tracking need the ones marked as needed.</string>
+    <string name="home_review_permissions">Review permissions</string>
+    <string name="home_goal_title">Daily goal</string>
+    <string name="home_goal_body">Today\'s total, top apps and your weekly villain appear here once usage tracking is built (Phase 2).</string>
+    <string name="profile_rank">Rank: Recruit · Level 1</string>
+    <string name="profile_hero_section">Hero and theme</string>
+    <string name="profile_goal_section">Daily goal</string>
+    <string name="goal_minus">- 15 min</string>
+    <string name="goal_plus">+ 15 min</string>
+    <string name="debug_gallery_open">Component gallery (debug build)</string>
+</resources>
