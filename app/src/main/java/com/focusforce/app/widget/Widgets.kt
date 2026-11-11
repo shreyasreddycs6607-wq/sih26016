@@ -57,7 +57,7 @@ class TodayWidget : GlanceAppWidget() {
         provideContent {
             val c = colors(data)
             Column(
-                GlanceModifier.fillMaxSize().background(cp(c.background)).cornerRadius(20.dp).padding(10.dp).clickable(actionStartActivity<MainActivity>()),
+                GlanceModifier.fillMaxSize().background(cp(c.background)).cornerRadius(20.dp).padding(10.dp).clickable(actionStartActivity(Intent(context, MainActivity::class.java))),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(ImageProvider(ring), context.getString(R.string.widget_today_ring_description, minutes(data.totalMs), minutes(data.goalMs)), GlanceModifier.size(84.dp))
@@ -103,7 +103,7 @@ class PowerMeterWidget : GlanceAppWidget() {
         provideContent {
             val c = colors(data)
             Column(
-                GlanceModifier.fillMaxSize().background(cp(c.background)).cornerRadius(20.dp).padding(12.dp).clickable(actionStartActivity<MainActivity>()),
+                GlanceModifier.fillMaxSize().background(cp(c.background)).cornerRadius(20.dp).padding(12.dp).clickable(actionStartActivity(Intent(context, MainActivity::class.java))),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(context.getString(R.string.widget_meter_title), style = TextStyle(color = cp(c.textMuted), fontSize = 12.sp))
