@@ -10,13 +10,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
@@ -98,5 +101,24 @@ fun UpcomingFeature(
                 Text("•  $it", style = FocusTheme.typography.body, color = FocusTheme.colors.textMuted, modifier = Modifier.padding(vertical = 2.dp))
             }
         }
+    }
+}
+
+/** Back arrow + title row used by pushed (non-tab) screens. Respects insets via its parent. */
+@Composable
+fun ScreenTopBar(title: String, onBack: () -> Unit, modifier: Modifier = Modifier) {
+    val c = FocusTheme.colors
+    val backLabel = androidx.compose.ui.res.stringResource(com.focusforce.app.R.string.action_back)
+    Row(
+        modifier.fillMaxWidth().padding(horizontal = FocusTheme.spacing.sm, vertical = FocusTheme.spacing.xs),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            Modifier.size(48.dp)
+                .clickable(role = androidx.compose.ui.semantics.Role.Button, onClick = onBack)
+                .semantics { contentDescription = backLabel },
+            contentAlignment = Alignment.Center,
+        ) { FocusIconView(FocusIcon.Back, c.text) }
+        Text(title, style = FocusTheme.typography.title, color = c.text)
     }
 }

@@ -9,6 +9,8 @@
     <string name="action_continue">Continue</string>
     <string name="selected">Selected</string>
     <string name="duration_hm">%1$dh %2$02dm</string>
+    <string name="duration_m">%1$dm</string>
+    <string name="duration_lt_1m">&lt;1m</string>
 
     <!-- Tabs -->
     <string name="tab_home">Home</string>
@@ -16,7 +18,6 @@
     <string name="tab_insights">Insights</string>
     <string name="tab_blocks">Blocks</string>
     <string name="tab_profile">Profile</string>
-    <string name="phase_2">Arrives with usage tracking (Phase 2)</string>
     <string name="phase_3">Arrives with the blocking engine (Phase 3)</string>
     <string name="phase_4">Arrives with limits, schedules and focus (Phase 4)</string>
     <string name="focus_desc">Pomodoro sessions that block distracting apps while they run, with a power-up when you start and a celebration when you finish.</string>
@@ -24,12 +25,6 @@
         <item>Custom Pomodoro lengths with a long-break cycle</item>
         <item>Named profiles: Study, Sleep, Work, Family</item>
         <item>Daily limits with warnings at 80 and 100 percent of your limit</item>
-    </string-array>
-    <string name="insights_desc">Daily, weekly and monthly charts of where your time goes, drawn in your hero\'s style.</string>
-    <string-array name="insights_bullets">
-        <item>Per-app drill-down and launches / unlocks</item>
-        <item>Productive vs distracting categories you can edit</item>
-        <item>Peak-hours heat map and the villain of the week</item>
     </string-array>
     <string name="blocks_desc">Pick the apps your hero guards. A full-screen block screen appears when you open one.</string>
     <string-array name="blocks_bullets">
@@ -174,17 +169,81 @@
     <!-- Home / Profile -->
     <string name="home_greeting">Welcome back, recruit</string>
     <string name="home_readiness_title">Setup readiness</string>
-    <string name="home_readiness_ring_label">ready</string>
     <string name="home_readiness_spoken">%1$d of %2$d permissions granted</string>
-    <string name="home_readiness_done">Your hero has everything it needs.</string>
     <string name="home_readiness_todo">Some permissions are still missing. Blocking and tracking need the ones marked as needed.</string>
     <string name="home_review_permissions">Review permissions</string>
-    <string name="home_goal_title">Daily goal</string>
-    <string name="home_goal_body">Today\'s total, top apps and your weekly villain appear here once usage tracking is built (Phase 2).</string>
     <string name="profile_rank">Rank: Recruit · Level 1</string>
     <string name="profile_hero_section">Hero and theme</string>
     <string name="profile_goal_section">Daily goal</string>
     <string name="goal_minus">- 15 min</string>
     <string name="goal_plus">+ 15 min</string>
     <string name="debug_gallery_open">Component gallery (debug build)</string>
+
+    <!-- Phase 2: usage, home, insights -->
+    <string name="usage_needed_title">Usage access needed</string>
+    <string name="usage_needed_body">FocusForce cannot see your screen time until you allow Usage access. Numbers stay on this device.</string>
+    <string name="usage_needed_action">Grant Usage access</string>
+    <string name="home_today_title">Today</string>
+    <string name="home_today_of_goal">of %1$s goal</string>
+    <string name="home_today_spoken">%1$s used today, goal %2$s</string>
+    <string name="home_unlocks">Phone unlocks today: %1$d</string>
+    <string name="home_top_apps">Top apps today</string>
+    <string name="home_no_apps">No app usage recorded yet today.</string>
+    <string name="delta_yesterday_more">%1$d%% more than yesterday</string>
+    <string name="delta_yesterday_less">%1$d%% less than yesterday</string>
+    <string name="delta_yesterday_same">Same as yesterday</string>
+    <string name="delta_no_yesterday">No data for yesterday yet</string>
+    <string name="delta_week_more">%1$d%% above your weekly average</string>
+    <string name="delta_week_less">%1$d%% below your weekly average</string>
+    <string name="delta_week_same">Right on your weekly average</string>
+    <string name="delta_no_week">Weekly average needs a few more days of data</string>
+    <string name="mission_title">Today\'s mission</string>
+    <string name="mission_stay_under">Stay under %1$s today</string>
+    <string name="mission_progress_spoken">%1$s used of %2$s</string>
+    <string name="mission_on_track">On track, %1$s left</string>
+    <string name="mission_at_risk">Careful, only %1$s left</string>
+    <string name="mission_failed">Over today\'s goal. Tomorrow is a fresh start.</string>
+    <string name="villain_title">Villain of the week</string>
+    <string name="villain_none">No villain yet. No distracting app has passed 5 minutes this week.</string>
+    <string name="villain_usage">%1$s this week, target under %2$s</string>
+    <string name="villain_progress_spoken">%1$s: %2$s of %3$s target</string>
+    <string name="villain_on_track">The boss is held back. Keep it up.</string>
+    <string name="villain_at_risk">The boss is gaining ground. Ease off this app.</string>
+    <string name="villain_failed">The boss won this round. Cut back and fight again.</string>
+
+    <string name="period_daily">Daily</string>
+    <string name="period_weekly">Weekly</string>
+    <string name="period_monthly">Monthly</string>
+    <string name="insights_total">Total</string>
+    <string name="insights_daily_avg">Daily average</string>
+    <string name="insights_unlocks">Unlocks</string>
+    <string name="insights_no_data">No history yet. Android only keeps about a week of usage, so charts fill in as FocusForce syncs each day.</string>
+    <string name="insights_no_data_period">No data for this period yet.</string>
+    <string name="insights_slot_no_data">no data</string>
+    <string name="insights_tap_hint">Tap a bar for details</string>
+    <string name="insights_goal_line">Dashed line: your daily goal</string>
+    <string name="insights_categories">Productive vs distracting</string>
+    <string name="insights_apps">Apps</string>
+    <string name="insights_heatmap">Peak hours, last 7 days</string>
+    <string name="insights_peak_hour">Your peak hour is %1$s</string>
+    <string name="chart_desc_hourly">Bar chart of usage by hour, total %1$s</string>
+    <string name="chart_desc_daily">Bar chart of usage by day, total %1$s</string>
+    <string name="chart_desc_app">Bar chart of %1$s usage over 14 days, %2$s today</string>
+    <string name="category_productive">Productive</string>
+    <string name="category_distracting">Distracting</string>
+    <string name="category_neutral">Neutral</string>
+    <string name="category_share">%1$s (%2$d%%)</string>
+    <string name="category_automatic">Chosen automatically from the app\'s type. Change it if it is wrong.</string>
+    <string name="category_set_by_you">Set by you</string>
+    <string name="category_reset">Back to automatic</string>
+    <string name="categories_edit">Edit categories</string>
+    <string name="categories_title">Edit categories</string>
+    <string name="categories_intro">Apps you used in the last 30 days. Your choice changes the productive and distracting totals and the villain of the week.</string>
+    <string name="categories_empty">No apps to show yet. Use your phone for a while and check back.</string>
+    <string name="opens_count">%1$d opens</string>
+    <string name="app_detail_title">App details</string>
+    <string name="app_category_title">Category</string>
+    <string name="app_today">Today</string>
+    <string name="app_opens_14d">Opens (14 days)</string>
+    <string name="app_uninstalled">Not installed any more</string>
 </resources>

@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.focusforce.app.ui.AppViewModel
 import com.focusforce.app.ui.debug.GalleryScreen
+import com.focusforce.app.ui.insights.AppDetailScreen
+import com.focusforce.app.ui.insights.CategoriesScreen
 import com.focusforce.app.ui.main.MainScaffold
 import com.focusforce.app.ui.onboarding.OnboardingFlow
 import com.focusforce.app.ui.permissions.PermissionStatusScreen
@@ -18,6 +20,8 @@ import kotlinx.serialization.Serializable
 @Serializable data object Main
 @Serializable data object PermissionStatus
 @Serializable data object Gallery
+@Serializable data class AppDetail(val packageName: String)
+@Serializable data object Categories
 
 @Composable
 fun FocusNavHost(onboardingComplete: Boolean, appViewModel: AppViewModel = hiltViewModel()) {
@@ -36,9 +40,13 @@ fun FocusNavHost(onboardingComplete: Boolean, appViewModel: AppViewModel = hiltV
             MainScaffold(
                 onOpenPermissions = { navController.navigate(PermissionStatus) },
                 onOpenGallery = { navController.navigate(Gallery) },
+                onOpenApp = { navController.navigate(AppDetail(it)) },
+                onOpenCategories = { navController.navigate(Categories) },
             )
         }
         composable<PermissionStatus> { PermissionStatusScreen(onBack = { navController.popBackStack() }) }
         composable<Gallery> { GalleryScreen(onBack = { navController.popBackStack() }) }
+        composable<AppDetail> { AppDetailScreen(onBack = { navController.popBackStack() }) }
+        composable<Categories> { CategoriesScreen(onBack = { navController.popBackStack() }) }
     }
 }

@@ -9,19 +9,25 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.focusforce.app.data.apps.AppInfoProvider
 import com.focusforce.app.domain.model.HeroTheme
 import com.focusforce.app.ui.AppViewModel
+import com.focusforce.app.ui.components.LocalAppInfoProvider
 import com.focusforce.app.ui.components.ThemedBackground
 import com.focusforce.app.ui.nav.FocusNavHost
 import com.focusforce.app.ui.theme.FocusForceTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject lateinit var appInfoProvider: AppInfoProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Every hero theme is dark-first, so system bar icons are always light.
@@ -29,7 +35,9 @@ class MainActivity : ComponentActivity() {
             statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
             navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
         )
-        setContent { FocusForceRoot() }
+        setContent {
+            CompositionLocalProvider(LocalAppInfoProvider provides appInfoProvider) { FocusForceRoot() }
+        }
     }
 }
 

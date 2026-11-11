@@ -27,3 +27,24 @@ fun AnimatedCounter(
     )
     Text(format(shown), modifier = modifier, style = style, color = color)
 }
+
+/** "2h 05m" as two rolling counters. [totalMinutes] changes roll the digits. */
+@Composable
+fun DurationCounter(
+    totalMinutes: Int,
+    modifier: Modifier = Modifier,
+    style: TextStyle = FocusTheme.typography.numeral,
+    color: Color = FocusTheme.colors.text,
+) {
+    androidx.compose.foundation.layout.Row(modifier, verticalAlignment = androidx.compose.ui.Alignment.Bottom) {
+        if (totalMinutes >= 60) {
+            AnimatedCounter(totalMinutes / 60, style = style, color = color)
+            Text("h ", style = style, color = color)
+            AnimatedCounter(totalMinutes % 60, style = style, color = color, format = { "%02d".format(it) })
+            Text("m", style = style, color = color)
+        } else {
+            AnimatedCounter(totalMinutes, style = style, color = color)
+            Text("m", style = style, color = color)
+        }
+    }
+}

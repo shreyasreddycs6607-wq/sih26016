@@ -33,6 +33,7 @@ import com.focusforce.app.ui.components.FocusBottomBar
 import com.focusforce.app.ui.components.FocusIcon
 import com.focusforce.app.ui.components.ThemedBackground
 import com.focusforce.app.ui.components.UpcomingFeature
+import com.focusforce.app.ui.insights.InsightsScreen
 import com.focusforce.app.ui.theme.FocusTheme
 
 private enum class Tab(val icon: FocusIcon, val label: Int) {
@@ -48,6 +49,8 @@ private enum class Tab(val icon: FocusIcon, val label: Int) {
 fun MainScaffold(
     onOpenPermissions: () -> Unit,
     onOpenGallery: () -> Unit,
+    onOpenApp: (String) -> Unit,
+    onOpenCategories: () -> Unit,
     appViewModel: AppViewModel = hiltViewModel(),
 ) {
     val settings by appViewModel.settings.collectAsStateWithLifecycle()
@@ -69,19 +72,14 @@ fun MainScaffold(
                     label = "tabs",
                 ) { index ->
                     when (Tab.entries[index]) {
-                        Tab.Home -> HomeScreen(current, onOpenPermissions)
+                        Tab.Home -> HomeScreen(current, onOpenPermissions, onOpenApp)
                         Tab.Focus -> UpcomingFeature(
                             stringResource(R.string.tab_focus),
                             stringResource(R.string.phase_4),
                             stringResource(R.string.focus_desc),
                             stringArrayItems(R.array.focus_bullets),
                         )
-                        Tab.Insights -> UpcomingFeature(
-                            stringResource(R.string.tab_insights),
-                            stringResource(R.string.phase_2),
-                            stringResource(R.string.insights_desc),
-                            stringArrayItems(R.array.insights_bullets),
-                        )
+                        Tab.Insights -> InsightsScreen(onOpenApp, onOpenCategories, onOpenPermissions)
                         Tab.Blocks -> UpcomingFeature(
                             stringResource(R.string.tab_blocks),
                             stringResource(R.string.phase_3),
