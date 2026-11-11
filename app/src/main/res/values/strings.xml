@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">FocusForce</string>
     <string name="app_wordmark">FOCUSFORCE</string>
-    <string name="accessibility_service_description">FocusForce notices which app has just opened so it can show your hero\'s block screen over the apps you chose to block. It does not read what is on your screen.</string>
+    <string name="accessibility_service_description">FocusForce notices which app has just opened so it can show your hero\'s block screen over the apps you chose to block. If you switch on short-video or website blocking it also reads interface ids and a browser address bar on your phone only, and never stores or sends them.</string>
 
     <!-- Common -->
     <string name="action_back">Back</string>
@@ -86,7 +86,7 @@
 
     <string name="perm_accessibility_title">Accessibility service</string>
     <string name="perm_accessibility_disclosure_label">Prominent disclosure</string>
-    <string name="perm_accessibility_disclosure">FocusForce uses Android\'s Accessibility Service for one purpose: to notice which app or window has just come to the front, so it can show the block screen over apps you chose to block.\n\nWhen a window opens it receives only the app\'s package name and the window\'s class name. It does not request access to your screen content. While a strict lock you started is running, it also recognises the Settings app and the system uninstall dialog so they can be held back until the lock ends.\n\nLater features, only if you turn them on, will add: detecting short-video sections inside apps, and reading the address of supported browsers to block websites on your list. We will ask again then.\n\nFocusForce never reads passwords, messages or anything you type, never takes screenshots, and never stores or sends screen content. Everything is processed on your device.\n\nYou can turn it off any time in Settings, Accessibility (except while a strict lock you started is running).</string>
+    <string name="perm_accessibility_disclosure">FocusForce uses Android\'s Accessibility Service to notice which app or window has just come to the front, so it can show the block screen over apps you chose to block.\n\nBy default it receives only the app\'s package name and the window\'s class name when a window opens.\n\nOnly if you switch on blocking of short-video sections or websites, it also looks at: (1) for the apps you picked, which interface elements are on screen (their technical ids, never any text); and (2) for supported browsers, the address-bar text, only to work out the site name. It does not read page content, messages, passwords or anything you type elsewhere.\n\nThis is checked on your phone for a single decision and then dropped. FocusForce does not log, store or send screen content, and has no account or server for it. While a strict lock you started is running, it also recognises the Settings app and the system uninstall dialog so they can be held back until the lock ends.\n\nYou can turn it off any time in Settings, Accessibility (except while a strict lock you started is running). If you turned the service on in an earlier version and the new features do not work, switch it off and on once.</string>
     <string name="perm_accessibility_why">Detecting the app in front is the most reliable way to block on every Android version. Without it we fall back to polling Usage access, which is slower and less dependable on some phones.</string>
     <string name="perm_accessibility_never">We do not collect, log, store or transmit what is on your screen, and the service is not used for anything except the blocking features you enable.</string>
     <string name="perm_accessibility_action">I agree. Open Accessibility settings</string>
@@ -441,4 +441,58 @@
     <string name="perm_dnd_why">Lets focus profiles and Pomodoro switch Do Not Disturb on while you focus, and put it back exactly as it was afterwards.</string>
     <string name="perm_dnd_never">We cannot read your notifications with this access, and we never change Do Not Disturb outside your own schedules and focus blocks. It is optional: everything else works without it.</string>
     <string name="perm_dnd_action">Open Do Not Disturb access</string>
+
+    <!-- Phase 5: short videos and websites -->
+    <string name="action_add">Add</string>
+    <string name="web_title">Short videos and websites</string>
+    <string name="web_open">Open</string>
+    <string name="web_card_body">Block just the Reels or Shorts section of an app, and block websites in your browser, without blocking the whole app.</string>
+    <string name="privacy_title">Your privacy</string>
+    <string name="privacy_body">Everything here runs only on your phone. FocusForce looks at the screen only for the apps and browsers you switch on, only to make one decision (is this a blocked section or site?), and then forgets it. Screen content, page text, addresses and the sites you visit are never logged, stored or sent anywhere. The only things saved are your own choices below.</string>
+    <string name="web_needs_accessibility">Short-video and website blocking need the Accessibility service. Turn it on first.</string>
+    <string name="web_blocking_off">Blocking is switched off, so nothing here will block yet. Switch Blocking on in the Blocks tab.</string>
+    <string name="feed_title">Short-video sections</string>
+    <string name="feed_intro">Switch on an app to block only its short-video section. The rest of the app keeps working.</string>
+    <string name="feed_none">None of the supported apps is installed.</string>
+    <string name="feed_experimental">Experimental: apps change their layout, so this may miss or misfire. Update the rules if it does.</string>
+    <string name="site_master">Block websites</string>
+    <string name="site_browsers">Works in: %1$s</string>
+    <string name="site_no_browsers">No supported browser is installed.</string>
+    <string name="site_categories">Built-in categories</string>
+    <string name="site_category_count">%1$d starter sites</string>
+    <string name="site_lists_note">These are short starter lists, not complete ones. Add your own sites and keywords below.</string>
+    <string name="cat_adult">Adult</string>
+    <string name="cat_social">Social media</string>
+    <string name="cat_gambling">Gambling</string>
+    <string name="site_domains">Your blocked sites</string>
+    <string name="site_domain_hint">reddit.com</string>
+    <string name="site_keywords">Blocked keywords</string>
+    <string name="site_keyword_hint">A word of at least 3 letters</string>
+    <string name="site_limits_note">Keywords match what the address bar shows (the address or words typed there), not the content of pages. Private tabs, other browsers and websites opened inside other apps may not be covered. Strict lock: sites and keywords cannot be removed and blocking cannot be switched off.</string>
+    <string name="rules_title">Detection rules</string>
+    <string name="rules_source_bundled">Built-in rules, version %1$d</string>
+    <string name="rules_source_imported">Rules you imported, version %1$d</string>
+    <string name="rules_source_updated">Downloaded rules, version %1$d</string>
+    <string name="rules_explain">The rules say which interface elements mean a short-video section and where each browser\'s address bar is. They never contain personal data.</string>
+    <string name="rules_import">Import a rules file</string>
+    <string name="rules_auto">Update rules automatically</string>
+    <string name="rules_auto_desc">Once a day, over any connection. Only the rules file is downloaded; nothing about you is sent.</string>
+    <string name="rules_checked">Last checked %1$s</string>
+    <string name="rules_check_now">Check for updates now</string>
+    <string name="rules_remote_off">Automatic updates are not set up in this build, so nothing is ever downloaded. You can still import a rules file by hand.</string>
+    <string name="web_notice_applied">Rules updated to version %1$d.</string>
+    <string name="web_notice_not_newer">That file is not newer than the version you have (%1$d).</string>
+    <string name="web_notice_invalid_file">That file is not a valid rules file, so nothing was changed.</string>
+    <string name="web_notice_too_large">That file is too large to be a rules file.</string>
+    <string name="web_notice_unreadable">The file could not be read.</string>
+    <string name="web_notice_network">Could not reach the update server. Try again later.</string>
+    <string name="web_notice_not_configured">Automatic updates are not set up in this build.</string>
+    <string name="web_notice_invalid_input">That is not a valid entry.</string>
+
+    <string name="block_title_feed">Short videos are off in %1$s</string>
+    <string name="block_title_site">%1$s is blocked</string>
+    <string name="block_feed_note">You switched off short videos here. The rest of the app is still yours.</string>
+    <string name="block_site_note">This site is on your block list.</string>
+    <string name="block_leave_feed">Leave the short videos</string>
+    <string name="block_leave_page">Leave this page</string>
 </resources>

@@ -47,6 +47,7 @@ import java.time.format.FormatStyle
 @Composable
 fun BlocksScreen(
     onOpenPicker: () -> Unit,
+    onOpenWeb: () -> Unit,
     onOpenPermissions: () -> Unit,
     viewModel: BlocksViewModel = hiltViewModel(),
 ) {
@@ -118,6 +119,15 @@ fun BlocksScreen(
             }
             Spacer(Modifier.height(FocusTheme.spacing.md))
             FocusButton(stringResource(R.string.blocks_add_apps), onOpenPicker, Modifier.fillMaxWidth())
+        }
+
+        // short videos + websites
+        FocusCard(Modifier.fillMaxWidth()) {
+            SectionLabel(stringResource(R.string.web_title))
+            Spacer(Modifier.height(FocusTheme.spacing.sm))
+            Text(stringResource(R.string.web_card_body), style = FocusTheme.typography.body, color = c.textMuted)
+            Spacer(Modifier.height(FocusTheme.spacing.md))
+            FocusButton(stringResource(R.string.web_open), onOpenWeb, Modifier.fillMaxWidth(), style = ButtonStyle.Secondary)
         }
 
         // passes

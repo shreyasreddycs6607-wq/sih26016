@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "feeds": [
+    {
+      "packageName": "com.google.android.youtube",
+      "label": "YouTube Shorts",
+      "verified": false,
+      "anyViewIds": [
+        "com.google.android.youtube:id/reel_recycler",
+        "com.google.android.youtube:id/reel_player_page_container"
+      ]
+    },
+    {
+      "packageName": "com.instagram.android",
+      "label": "Instagram Reels",
+      "verified": false,
+      "anyViewIds": [
+        "com.instagram.android:id/clips_viewer_view_pager",
+        "com.instagram.android:id/clips_swipe_refresh_container"
+      ]
+    }
+  ],
+  "browsers": [
+    { "packageName": "com.android.chrome", "label": "Chrome", "verified": false, "urlBarIds": ["com.android.chrome:id/url_bar"] },
+    { "packageName": "com.chrome.beta", "label": "Chrome Beta", "verified": false, "urlBarIds": ["com.chrome.beta:id/url_bar"] },
+    { "packageName": "org.mozilla.firefox", "label": "Firefox", "verified": false, "urlBarIds": ["org.mozilla.firefox:id/mozac_browser_toolbar_url_view", "org.mozilla.firefox:id/url_bar_title"] },
+    { "packageName": "com.microsoft.emmx", "label": "Edge", "verified": false, "urlBarIds": ["com.microsoft.emmx:id/url_bar"] },
+    { "packageName": "com.brave.browser", "label": "Brave", "verified": false, "urlBarIds": ["com.brave.browser:id/url_bar"] },
+    { "packageName": "com.sec.android.app.sbrowser", "label": "Samsung Internet", "verified": false, "urlBarIds": ["com.sec.android.app.sbrowser:id/location_bar_edit_text"] },
+    { "packageName": "com.opera.browser", "label": "Opera", "verified": false, "urlBarIds": ["com.opera.browser:id/url_field"] },
+    { "packageName": "com.duckduckgo.mobile.android", "label": "DuckDuckGo", "verified": false, "urlBarIds": ["com.duckduckgo.mobile.android:id/omnibarTextInput"] },
+    { "packageName": "com.vivaldi.browser", "label": "Vivaldi", "verified": false, "urlBarIds": ["com.vivaldi.browser:id/url_bar"] }
+  ],
+  "categories": [
+    {
+      "id": "adult",
+      "domains": ["pornhub.com", "xvideos.com", "xnxx.com", "xhamster.com", "redtube.com", "youporn.com", "spankbang.com", "onlyfans.com", "chaturbate.com", "stripchat.com"]
+    },
+    {
+      "id": "social",
+      "domains": ["facebook.com", "instagram.com", "twitter.com", "x.com", "tiktok.com", "snapchat.com", "reddit.com", "pinterest.com", "tumblr.com", "threads.net"]
+    },
+    {
+      "id": "gambling",
+      "domains": ["bet365.com", "draftkings.com", "fanduel.com", "stake.com", "betway.com", "williamhill.com", "pokerstars.com", "1xbet.com", "888casino.com", "unibet.com"]
+    }
+  ]
+}

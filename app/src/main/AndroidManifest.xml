@@ -27,6 +27,10 @@
     <!-- Restart blocking after a reboot if the user had it on. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- Only used to download an updated detection-rules file, and only if this build was given a rules URL
+         (BuildConfig.RULES_URL, empty by default). No identifiers or usage data are ever sent. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- Needed to show real app names/icons and to detect launchers for usage stats (Android 11+
          package visibility). Screen-time and blocker apps are an allowed use on Play, but a
          declaration form is required in Play Console. -->

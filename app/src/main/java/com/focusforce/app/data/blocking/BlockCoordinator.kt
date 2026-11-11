@@ -10,6 +10,8 @@ import com.focusforce.app.data.focus.LiveUsage
 import com.focusforce.app.data.focus.NotificationIds
 import com.focusforce.app.data.focus.Notifier
 import com.focusforce.app.data.usage.ExcludedPackages
+import com.focusforce.app.data.web.RulesRepository
+import com.focusforce.app.data.web.WebPrefs
 import com.focusforce.app.domain.blocking.BlockContext
 import com.focusforce.app.domain.blocking.BlockDecision
 import com.focusforce.app.domain.blocking.BlockDecisionEngine
@@ -27,6 +29,14 @@ import com.focusforce.app.domain.repo.BlockSettingsRepository
 import com.focusforce.app.domain.repo.BlockedAppsRepository
 import com.focusforce.app.domain.repo.FocusRepository
 import com.focusforce.app.domain.repo.UsageRepository
+import com.focusforce.app.domain.rules.BrowserRule
+import com.focusforce.app.domain.rules.FeedMatcher
+import com.focusforce.app.domain.rules.FeedRule
+import com.focusforce.app.domain.rules.RulesConfig
+import com.focusforce.app.domain.rules.SiteHit
+import com.focusforce.app.domain.rules.SiteMatcher
+import com.focusforce.app.domain.rules.SiteRulesBuilder
+import com.focusforce.app.domain.rules.WebSettings
 import com.focusforce.app.domain.schedule.FocusSchedule
 import com.focusforce.app.domain.schedule.ScheduleMatcher
 import com.focusforce.app.domain.usage.AppCategory
@@ -40,6 +50,9 @@ import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
@@ -60,6 +73,8 @@ class BlockCoordinator @Inject constructor(
     focusRepository: FocusRepository,
     usageRepository: UsageRepository,
     prefs: FocusPrefs,
+    webPrefs: WebPrefs,
+    rulesRepository: RulesRepository,
     private val liveUsage: LiveUsage,
     private val notifier: Notifier,
     private val appInfo: AppInfoProvider,
@@ -68,7 +83,8 @@ class BlockCoordinator @Inject constructor(
 ) {
     private data class Core(val settings: BlockSettings, val blocked: Set<String>, val pass: PassState)
     private data class Focus(val limits: List<LimitRule>, val groups: Map<Long, AppGroup>, val schedules: List<FocusSchedule>, val run: PomodoroRun?)
-    private data class Snapshot(val core: Core, val focus: Focus, val distracting: Set<String>)
+    private data class Web(val settings: WebSettings, val rules: RulesConfig)
+    private data class Snapshot(val core: Core, val focus: Focus, val distracting: Set<String>, val web: Web)
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     @Volatile private var snapshot: Snapshot? = null
@@ -82,6 +98,14 @@ class BlockCoordinator @Inject constructor(
     /** Set by the accessibility service; the polling fallback stays idle while this is true. */
     @Volatile var accessibilityConnected: Boolean = false
 
+    private val _contentEventsWanted = MutableStateFlow(false)
+
+    /** True when some short-video or website rule could apply; the accessibility service only listens for screen changes then. */
+    val contentEventsWanted: StateFlow<Boolean> = _contentEventsWanted.asStateFlow()
+
+    /** Set by the accessibility service: presses Back in the app in front (to leave a feed or page). */
+    @Volatile var backAction: (() -> Boolean)? = null
+
     init {
         val today = LocalDate.now()
         val core = combine(settingsRepository.settings, blockedApps.observe(), settingsRepository.passState, ::Core)
@@ -92,7 +116,58 @@ class BlockCoordinator @Inject constructor(
         val distracting = combine(usageRepository.observeApps(today.minusDays(29), today), usageRepository.observeCategoryOverrides()) { rows, overrides ->
             Insights.topApps(rows).map { it.packageName }.filterTo(mutableSetOf()) { appInfo.resolveCategory(it, overrides) == AppCategory.DISTRACTING }
         }
-        scope.launch { combine(core, focus, distracting, ::Snapshot).collect { snapshot = it } }
+        val web = combine(webPrefs.settings, rulesRepository.rules) { w, r -> Web(w, r.config) }
+        scope.launch {
+            combine(core, focus, distracting, web, ::Snapshot).collect {
+                snapshot = it
+                _contentEventsWanted.value = wantsContentEvents(it)
+            }
+        }
+    }
+
+    fun performBack(): Boolean = backAction?.invoke() ?: false
+
+    private fun wantsContentEvents(s: Snapshot): Boolean =
+        s.core.settings.enabled && (
+            s.web.settings.feedPackages.isNotEmpty() ||
+                (s.web.settings.websitesEnabled && s.web.rules.browsers.isNotEmpty()) ||
+                s.focus.schedules.any { it.enabled && it.sites.isNotEmpty() }
+            )
+
+    private fun activeScheduleSites(s: Snapshot): Set<String> =
+        ScheduleMatcher.active(s.focus.schedules, LocalDateTime.now()).flatMapTo(mutableSetOf()) { it.sites }
+
+    fun feedRule(pkg: String): FeedRule? = snapshot?.web?.rules?.feeds?.firstOrNull { it.packageName == pkg }
+    fun browserRule(pkg: String): BrowserRule? = snapshot?.web?.rules?.browsers?.firstOrNull { it.packageName == pkg }
+
+    /** Should the accessibility service look at this app's screen at all? Anything it does not ask for is never read. */
+    fun wantsInspection(pkg: String): Boolean {
+        val s = snapshot ?: return false
+        if (!s.core.settings.enabled) return false
+        val feed = pkg in s.web.settings.feedPackages && s.web.rules.feeds.any { it.packageName == pkg }
+        val browser = s.web.rules.browsers.any { it.packageName == pkg } &&
+            (s.web.settings.websitesEnabled || activeScheduleSites(s).isNotEmpty())
+        return feed || browser
+    }
+
+    /**
+     * Called with what was just read from the screen: the view ids of an app window and/or the address-bar text of a
+     * browser. Both are used for this one decision and then dropped; neither is stored, logged or sent.
+     */
+    fun onScreen(pkg: String, viewIds: Set<String>, addressBarText: String?) {
+        val snap = snapshot ?: return
+        val feedRule = snap.web.rules.feeds.firstOrNull { it.packageName == pkg }
+        val feedOn = feedRule != null && pkg in snap.web.settings.feedPackages && FeedMatcher.isFeed(feedRule, viewIds)
+        var site: String? = null
+        if (addressBarText != null) {
+            val rules = SiteRulesBuilder.build(snap.web.settings, snap.web.rules, activeScheduleSites(snap))
+            site = when (val hit = SiteMatcher.check(addressBarText, rules)) {
+                is SiteHit.Domain -> hit.domain
+                is SiteHit.Keyword -> hit.keyword
+                null -> null
+            }
+        }
+        decide(pkg, "", snap, emptyMap(), feedOnScreen = if (feedOn) setOf(pkg) else emptySet(), blockedSite = site)
     }
 
     fun onForeground(packageName: String?, className: String?) {
@@ -125,7 +200,7 @@ class BlockCoordinator @Inject constructor(
         }
     }
 
-    private fun decide(pkg: String, cls: String, snap: Snapshot, usage: Map<String, Long>) {
+    private fun decide(pkg: String, cls: String, snap: Snapshot, usage: Map<String, Long>, feedOnScreen: Set<String> = emptySet(), blockedSite: String? = null) {
         val nowMs = System.currentTimeMillis()
         val nowTime = LocalDateTime.now()
         val run = snap.focus.run?.let { Pomodoro.advance(it, nowMs).first }
@@ -138,12 +213,16 @@ class BlockCoordinator @Inject constructor(
             limitReached = LimitMath.reachedPackages(snap.focus.limits, snap.focus.groups, usage, nowTime.dayOfWeek),
             scheduleBlocked = ScheduleMatcher.blockedPackages(snap.focus.schedules, nowTime),
             pomodoroBlocked = if (Pomodoro.isBlocking(run)) snap.core.blocked + snap.distracting else emptySet(),
+            feedOnScreen = feedOnScreen,
+            blockedSite = blockedSite,
         )
         val decision = BlockDecisionEngine.decide(pkg, cls, ctx, nowMs, LocalDate.now().toEpochDay())
         if (decision !is BlockDecision.Block) return
         // Repeated window events from the same app within a moment would relaunch the screen over and over.
-        if (decision.packageName == lastBlockPackage && nowMs - lastBlockAtMs < DEDUPE_MS) return
-        lastBlockPackage = decision.packageName
+        val key = decision.passKey + "|" + decision.reason.name
+        val window = if (decision.reason == com.focusforce.app.domain.blocking.BlockReason.SHORT_VIDEO || decision.reason == com.focusforce.app.domain.blocking.BlockReason.WEBSITE) SCREEN_DEDUPE_MS else DEDUPE_MS
+        if (key == lastBlockPackage && nowMs - lastBlockAtMs < window) return
+        lastBlockPackage = key
         lastBlockAtMs = nowMs
         show(decision)
     }
@@ -182,6 +261,8 @@ class BlockCoordinator @Inject constructor(
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
             .putExtra(BlockActivity.EXTRA_PACKAGE, block.packageName)
             .putExtra(BlockActivity.EXTRA_REASON, block.reason.name)
+            .putExtra(BlockActivity.EXTRA_DETAIL, block.detail)
+            .putExtra(BlockActivity.EXTRA_PASS_KEY, block.passKey)
         try {
             context.startActivity(intent)
         } catch (_: RuntimeException) {
@@ -191,5 +272,6 @@ class BlockCoordinator @Inject constructor(
 
     private companion object {
         const val DEDUPE_MS = 800L
+        const val SCREEN_DEDUPE_MS = 2_500L
     }
 }

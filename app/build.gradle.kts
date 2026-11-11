@@ -18,6 +18,8 @@ android {
         versionCode = 1
         versionName = "0.1.0-phase1"
         vectorDrawables { useSupportLibrary = true }
+        // HTTPS URL of a rules JSON for optional remote updates. Empty = no network use at all.
+        buildConfigField("String", "RULES_URL", "\"\"")
     }
 
     buildTypes {

@@ -32,7 +32,6 @@ import com.focusforce.app.ui.components.ContentMaxWidth
 import com.focusforce.app.ui.components.FocusBottomBar
 import com.focusforce.app.ui.components.FocusIcon
 import com.focusforce.app.ui.components.ThemedBackground
-import com.focusforce.app.ui.components.UpcomingFeature
 import com.focusforce.app.ui.blocks.BlocksScreen
 import com.focusforce.app.ui.focus.FocusScreen
 import com.focusforce.app.ui.insights.InsightsScreen
@@ -54,6 +53,7 @@ fun MainScaffold(
     onOpenApp: (String) -> Unit,
     onOpenCategories: () -> Unit,
     onOpenPicker: () -> Unit,
+    onOpenWeb: () -> Unit,
     onOpenScheduleEditor: (Long) -> Unit,
     onOpenLimitEditor: (Long) -> Unit,
     onOpenGroupEditor: (Long) -> Unit,
@@ -81,7 +81,7 @@ fun MainScaffold(
                         Tab.Home -> HomeScreen(current, onOpenPermissions, onOpenApp)
                         Tab.Focus -> FocusScreen(onOpenPermissions, onOpenScheduleEditor, onOpenLimitEditor, onOpenGroupEditor)
                         Tab.Insights -> InsightsScreen(onOpenApp, onOpenCategories, onOpenPermissions)
-                        Tab.Blocks -> BlocksScreen(onOpenPicker, onOpenPermissions)
+                        Tab.Blocks -> BlocksScreen(onOpenPicker, onOpenWeb, onOpenPermissions)
                         Tab.Profile -> ProfileScreen(current, appViewModel, onOpenPermissions, onOpenGallery)
                     }
                 }

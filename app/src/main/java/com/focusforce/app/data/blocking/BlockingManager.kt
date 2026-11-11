@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.first
 
-enum class Outcome { OK, DENIED_STRICT, NO_PASS }
+enum class Outcome { OK, DENIED_STRICT, NO_PASS, INVALID }
 
 /**
  * The only writer of blocking state. Every action that would loosen blocking goes through

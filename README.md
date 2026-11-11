@@ -21,8 +21,8 @@ DataStore, WorkManager, Glance. Offline-first; Firebase only for multiplayer (Ph
 | 1 | Foundation, design tokens, 3 themes, component library + debug gallery, onboarding, permission flow | built, see PHASE1.md |
 | 2 | UsageStats tracking, Home, Insights, WorkManager sync into Room | built, see PHASE2.md (CI build passed) |
 | 3 | Blocking engine, block screen, app picker, strict mode | built, see PHASE3.md (CI build passed) |
-| 4 | Limits, schedules, Pomodoro, nudges | **built, see PHASE4.md** |
-| 5 | Short-video and website blocking | not started |
+| 4 | Limits, schedules, Pomodoro, nudges | built, see PHASE4.md (CI build passed) |
+| 5 | Short-video and website blocking | **built, see PHASE5.md** |
 | 6 | Multiplayer (Firebase) | not started |
 | 7 | Widgets, tile, settings, billing, performance, release | not started |
 

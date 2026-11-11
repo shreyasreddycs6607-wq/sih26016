@@ -6,6 +6,7 @@ import androidx.work.Configuration
 import com.focusforce.app.data.focus.FocusEnvironment
 import com.focusforce.app.data.focus.PomodoroController
 import com.focusforce.app.data.usage.UsageSyncWorker
+import com.focusforce.app.data.web.RulesUpdateWorker
 import com.focusforce.app.domain.repo.BlockSettingsRepository
 import com.focusforce.app.service.BlockerController
 import dagger.hilt.android.HiltAndroidApp
@@ -29,6 +30,7 @@ class FocusForceApp : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         UsageSyncWorker.schedule(this)
+        if (BuildConfig.RULES_URL.startsWith("https://")) RulesUpdateWorker.schedule(this)
         // Process death recovery: whenever the process starts and blocking is on, bring the service back.
         CoroutineScope(Dispatchers.Default).launch {
             if (blockSettings.settings.first().enabled) BlockerController.ensureRunning(this@FocusForceApp)

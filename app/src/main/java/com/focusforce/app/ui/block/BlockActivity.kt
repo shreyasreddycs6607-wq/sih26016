@@ -54,7 +54,7 @@ class BlockActivity : ComponentActivity() {
             } else {
                 FocusForceTheme(current.hero) {
                     CompositionLocalProvider(LocalAppInfoProvider provides appInfo) {
-                        BlockScreen(current, onHome = ::goHome, onPass = ::usePass)
+                        BlockScreen(current, onHome = ::goHome, onPass = ::usePass, onLeave = ::leave)
                     }
                 }
             }
@@ -71,7 +71,7 @@ class BlockActivity : ComponentActivity() {
         val pkg = intent.getStringExtra(EXTRA_PACKAGE) ?: return
         val reason = runCatching { BlockReason.valueOf(intent.getStringExtra(EXTRA_REASON).orEmpty()) }
             .getOrDefault(BlockReason.BLOCKED_APP)
-        viewModel.setTarget(pkg, reason)
+        viewModel.setTarget(pkg, reason, intent.getStringExtra(EXTRA_DETAIL), intent.getStringExtra(EXTRA_PASS_KEY))
     }
 
     private fun goHome() {
@@ -79,11 +79,19 @@ class BlockActivity : ComponentActivity() {
         finishAndRemoveTask()
     }
 
+    private fun leave() {
+        viewModel.leave()
+        finishAndRemoveTask()
+    }
+
     private fun usePass() {
         lifecycleScope.launch {
-            val pkg = viewModel.state.value?.packageName ?: return@launch
+            val ui = viewModel.state.value ?: return@launch
             if (viewModel.takePass()) {
-                packageManager.getLaunchIntentForPackage(pkg)?.let { startActivity(it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+                // A pass for a feed or a site just lets you carry on where you were; a pass for an app reopens it.
+                if (ui.reason != BlockReason.SHORT_VIDEO && ui.reason != BlockReason.WEBSITE) {
+                    packageManager.getLaunchIntentForPackage(ui.packageName)?.let { startActivity(it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+                }
                 finishAndRemoveTask()
             }
         }
@@ -92,5 +100,7 @@ class BlockActivity : ComponentActivity() {
     companion object {
         const val EXTRA_PACKAGE = "package"
         const val EXTRA_REASON = "reason"
+        const val EXTRA_DETAIL = "detail"
+        const val EXTRA_PASS_KEY = "pass_key"
     }
 }

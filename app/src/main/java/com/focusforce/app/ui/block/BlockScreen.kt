@@ -57,7 +57,7 @@ import kotlin.math.sin
  * and a quiet "Rest now". DASH: a comic starburst and "HALT!".
  */
 @Composable
-fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
+fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit, onLeave: () -> Unit) {
     val t = FocusTheme.tokens
     val c = t.colors
     val reduce = FocusTheme.reduceMotion
@@ -91,6 +91,8 @@ fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
         BlockReason.LIMIT_REACHED -> stringResource(R.string.block_title_limit, ui.label)
         BlockReason.SCHEDULE -> stringResource(R.string.block_title_schedule, ui.label)
         BlockReason.POMODORO -> stringResource(R.string.block_title_pomodoro)
+        BlockReason.SHORT_VIDEO -> stringResource(R.string.block_title_feed, ui.label)
+        BlockReason.WEBSITE -> stringResource(R.string.block_title_site, ui.detail ?: ui.label)
         BlockReason.STRICT_SETTINGS -> stringResource(R.string.block_title_settings)
         BlockReason.STRICT_UNINSTALL -> stringResource(R.string.block_title_uninstall)
     }
@@ -145,6 +147,8 @@ fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
                             ui.reason == BlockReason.LIMIT_REACHED -> R.string.block_limit_note
                             ui.reason == BlockReason.SCHEDULE -> R.string.block_schedule_note
                             ui.reason == BlockReason.POMODORO -> R.string.block_pomodoro_note
+                            ui.reason == BlockReason.SHORT_VIDEO -> R.string.block_feed_note
+                            ui.reason == BlockReason.WEBSITE -> R.string.block_site_note
                             ui.strictActive -> R.string.block_strict_note
                             else -> R.string.block_default_note
                         },
@@ -154,7 +158,18 @@ fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
                     textAlign = TextAlign.Center,
                 )
                 Spacer(Modifier.height(FocusTheme.spacing.xl))
-                FocusButton(stringResource(R.string.block_go_home), onHome, Modifier.fillMaxWidth())
+                val canLeave = ui.reason == BlockReason.SHORT_VIDEO || ui.reason == BlockReason.WEBSITE
+                if (canLeave) {
+                    FocusButton(
+                        stringResource(if (ui.reason == BlockReason.SHORT_VIDEO) R.string.block_leave_feed else R.string.block_leave_page),
+                        onLeave,
+                        Modifier.fillMaxWidth(),
+                    )
+                    Spacer(Modifier.height(FocusTheme.spacing.md))
+                    FocusButton(stringResource(R.string.block_go_home), onHome, Modifier.fillMaxWidth(), style = ButtonStyle.Secondary)
+                } else {
+                    FocusButton(stringResource(R.string.block_go_home), onHome, Modifier.fillMaxWidth())
+                }
                 if (isAppReason) {
                     Spacer(Modifier.height(FocusTheme.spacing.md))
                     if (ui.canPass) {
@@ -162,7 +177,7 @@ fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
                             stringResource(R.string.block_pass, ui.passesLeft),
                             onPass,
                             Modifier.fillMaxWidth(),
-                            style = ButtonStyle.Secondary,
+                            style = if (canLeave) ButtonStyle.Ghost else ButtonStyle.Secondary,
                         )
                     } else {
                         Text(

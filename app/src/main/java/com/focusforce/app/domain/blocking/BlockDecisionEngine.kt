@@ -19,6 +19,10 @@ data class BlockContext(
     val scheduleBlocked: Set<String> = emptySet(),
     /** Apps blocked by a running Pomodoro FOCUS phase (empty during breaks or when none runs). */
     val pomodoroBlocked: Set<String> = emptySet(),
+    /** Apps whose short-video feed is switched on for blocking AND currently on screen. */
+    val feedOnScreen: Set<String> = emptySet(),
+    /** Site name of the blocked page currently open in the browser being decided about, or null. */
+    val blockedSite: String? = null,
 )
 
 object BlockDecisionEngine {
@@ -45,18 +49,31 @@ object BlockDecisionEngine {
         if (packageName in ctx.pomodoroBlocked) {
             return BlockDecision.Block(packageName, BlockReason.POMODORO, canPass = false, passesLeft = left)
         }
+        var detail: String? = null
+        var passKey = packageName
         val reason = when {
             packageName in ctx.limitReached -> BlockReason.LIMIT_REACHED
             packageName in ctx.scheduleBlocked -> BlockReason.SCHEDULE
             packageName in ctx.blocked -> BlockReason.BLOCKED_APP
+            ctx.blockedSite != null -> {
+                detail = ctx.blockedSite
+                passKey = "site:${ctx.blockedSite}"
+                BlockReason.WEBSITE
+            }
+            packageName in ctx.feedOnScreen -> {
+                passKey = "feed:$packageName"
+                BlockReason.SHORT_VIDEO
+            }
             else -> return BlockDecision.Allow
         }
-        if (ctx.pass.activeUntil(packageName, nowMs) != null) return BlockDecision.Allow
+        if (ctx.pass.activeUntil(passKey, nowMs) != null) return BlockDecision.Allow
         return BlockDecision.Block(
             packageName = packageName,
             reason = reason,
             canPass = ctx.settings.passesEnabled && !strict && left > 0,
             passesLeft = left,
+            detail = detail,
+            passKey = passKey,
         )
     }
 }
