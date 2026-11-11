@@ -20,6 +20,13 @@
          Used to start/stop focus schedules on time. -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
+    <!-- Keeps the blocker alive. specialUse is declared with an explanation below and needs a Play Console
+         declaration ("app blocker / digital wellbeing"). -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- Restart blocking after a reboot if the user had it on. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <!-- Needed to show real app names/icons and to detect launchers for usage stats (Android 11+
          package visibility). Screen-time and blocker apps are an allowed use on Play, but a
          declaration form is required in Play Console. -->
@@ -58,8 +65,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Inert in Phase 1: it only needs to exist so the user can enable it from Settings.
-             Foreground-app detection is wired up in Phase 3. -->
+        <!-- Foreground-app detection: window-state events only, no window content (see accessibility_service_config.xml). -->
         <service
             android:name=".service.FocusAccessibilityService"
             android:exported="true"
@@ -72,5 +78,32 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
+
+        <!-- Full-screen hero block screen. Own task, not in Recents, never shown as the user's own destination. -->
+        <activity
+            android:name=".ui.block.BlockActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:theme="@style/Theme.FocusForce" />
+
+        <service
+            android:name=".service.BlockerService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Digital wellbeing app blocker: keeps the user-chosen app blocking running and shows its status notification" />
+        </service>
+
+        <receiver
+            android:name=".service.BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

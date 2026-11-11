@@ -18,19 +18,12 @@
     <string name="tab_insights">Insights</string>
     <string name="tab_blocks">Blocks</string>
     <string name="tab_profile">Profile</string>
-    <string name="phase_3">Arrives with the blocking engine (Phase 3)</string>
     <string name="phase_4">Arrives with limits, schedules and focus (Phase 4)</string>
     <string name="focus_desc">Pomodoro sessions that block distracting apps while they run, with a power-up when you start and a celebration when you finish.</string>
     <string-array name="focus_bullets">
         <item>Custom Pomodoro lengths with a long-break cycle</item>
         <item>Named profiles: Study, Sleep, Work, Family</item>
         <item>Daily limits with warnings at 80 and 100 percent of your limit</item>
-    </string-array>
-    <string name="blocks_desc">Pick the apps your hero guards. A full-screen block screen appears when you open one.</string>
-    <string-array name="blocks_bullets">
-        <item>Searchable app picker with select-by-category</item>
-        <item>Optional limited 5-minute pass, or strict mode with no override</item>
-        <item>Keeps working after reboot and on battery-saving phones</item>
     </string-array>
 
     <!-- Heroes -->
@@ -100,7 +93,7 @@
 
     <string name="perm_accessibility_title">Accessibility service</string>
     <string name="perm_accessibility_disclosure_label">Prominent disclosure</string>
-    <string name="perm_accessibility_disclosure">FocusForce uses Android\'s Accessibility Service for one purpose: to notice which app or window has just come to the front, so it can show the block screen over apps you chose to block.\n\nThis version installs the service but does not yet act on any event. Features that come later, and only if you turn them on, add: detecting short-video sections inside apps, and reading the address of supported browsers to block websites on your list.\n\nFocusForce never reads passwords, messages or anything you type. It never takes screenshots and never stores or sends screen content. Everything is processed on your device.\n\nYou can turn it off any time in Settings, Accessibility.</string>
+    <string name="perm_accessibility_disclosure">FocusForce uses Android\'s Accessibility Service for one purpose: to notice which app or window has just come to the front, so it can show the block screen over apps you chose to block.\n\nWhen a window opens it receives only the app\'s package name and the window\'s class name. It does not request access to your screen content. While a strict lock you started is running, it also recognises the Settings app and the system uninstall dialog so they can be held back until the lock ends.\n\nLater features, only if you turn them on, will add: detecting short-video sections inside apps, and reading the address of supported browsers to block websites on your list. We will ask again then.\n\nFocusForce never reads passwords, messages or anything you type, never takes screenshots, and never stores or sends screen content. Everything is processed on your device.\n\nYou can turn it off any time in Settings, Accessibility (except while a strict lock you started is running).</string>
     <string name="perm_accessibility_why">Detecting the app in front is the most reliable way to block on every Android version. Without it we fall back to polling Usage access, which is slower and less dependable on some phones.</string>
     <string name="perm_accessibility_never">We do not collect, log, store or transmit what is on your screen, and the service is not used for anything except the blocking features you enable.</string>
     <string name="perm_accessibility_action">I agree. Open Accessibility settings</string>
@@ -246,4 +239,81 @@
     <string name="app_today">Today</string>
     <string name="app_opens_14d">Opens (14 days)</string>
     <string name="app_uninstalled">Not installed any more</string>
+
+    <!-- Phase 3: blocking -->
+    <string name="notif_channel_blocking">Blocking status</string>
+    <string name="notif_title">FocusForce is on guard</string>
+    <string name="notif_title_strict">Strict lock is active</string>
+    <string name="notif_text">%1$d guarded apps</string>
+
+    <string name="block_banner_vector">ACCESS RESTRICTED</string>
+    <string name="block_banner_noctis">Rest now, sentinel</string>
+    <string name="block_banner_dash">HALT!</string>
+    <string name="block_mascot_description">%1$s stands guard in front of the blocked app</string>
+    <string name="block_title">%1$s is guarded</string>
+    <string name="block_title_settings">Settings are locked</string>
+    <string name="block_title_uninstall">Uninstalling is locked</string>
+    <string name="block_reason_settings">A strict lock you started is running. Settings are held back until it ends, so FocusForce cannot be switched off early.</string>
+    <string name="block_reason_uninstall">A strict lock you started is running. Uninstalling is held back until it ends.</string>
+    <string name="block_strict_note">Strict lock is on. There are no passes and no way around it until it ends.</string>
+    <string name="block_default_note">You chose to guard this app. Come back when your focus time is over.</string>
+    <string name="block_go_home">Take me home</string>
+    <string name="block_pass">5-minute pass (%1$d left today)</string>
+    <string name="block_no_pass_strict">No passes during a strict lock.</string>
+    <string name="block_no_pass_left">No passes left today.</string>
+    <string-array name="block_lines_vector">
+        <item>Scan complete. This app is not cleared for you right now.</item>
+        <item>Distraction detected. Access denied, and I have the data to back it up.</item>
+        <item>Your focus metrics are climbing. Do not break the streak.</item>
+        <item>Rerouting you to something useful in three, two, one.</item>
+    </string-array>
+    <string-array name="block_lines_noctis">
+        <item>The night is quiet. This can wait until morning.</item>
+        <item>I will keep watch. You rest your mind.</item>
+        <item>Not tonight. The moon says you have done enough.</item>
+        <item>Some doors are better left closed until dawn.</item>
+    </string-array>
+    <string-array name="block_lines_dash">
+        <item>Whoa, hold it right there! Back to the mission!</item>
+        <item>Nope nope nope! Speed run your goals instead!</item>
+        <item>Not today, scroll monster! I am faster than you!</item>
+        <item>Pow! Blocked! Go grab that win!</item>
+    </string-array>
+
+    <string name="blocks_master">Blocking</string>
+    <string name="blocks_master_desc">Show the hero block screen over %1$d guarded apps</string>
+    <string name="blocks_detection">How FocusForce notices apps</string>
+    <string name="blocks_mode_accessibility">Accessibility service. Instant and the most reliable.</string>
+    <string name="blocks_mode_polling">Checking Usage access every second. It works but is slower, uses more battery and is easier for the system to stop. Turn on the Accessibility service for best results.</string>
+    <string name="blocks_mode_none">Nothing can detect apps yet. Turn on the Accessibility service, or grant both Usage access and Display over other apps.</string>
+    <string name="blocks_fix_detection">Improve detection</string>
+    <string name="blocks_apps_title">Guarded apps (%1$d)</string>
+    <string name="blocks_apps_empty">No apps guarded yet. Add the apps that pull you away.</string>
+    <string name="blocks_add_apps">Add apps</string>
+    <string name="blocks_remove">Remove</string>
+    <string name="blocks_passes">Allow 5-minute passes</string>
+    <string name="blocks_passes_desc">Up to 3 a day. Each one opens a blocked app for 5 minutes. Never available during a strict lock.</string>
+    <string name="strict_title">Strict lock</string>
+    <string name="strict_explain">Locks your own settings for a fixed time: no passes, you cannot switch blocking off or remove apps, and (if enabled below) the Settings app and the uninstall dialog are held back. It ends by itself and cannot be ended early from inside FocusForce.</string>
+    <string name="strict_active">Locked until %1$s</string>
+    <string name="strict_active_body">No passes, blocking cannot be switched off, and apps cannot be removed until then. You can add more apps or extend the lock.</string>
+    <string name="strict_guard">Also lock Settings and uninstall</string>
+    <string name="strict_guard_desc">During a strict lock the Settings app and the system uninstall dialog show the block screen. Calls, emergency and the system UI always work.</string>
+    <string name="strict_minutes">%1$d min</string>
+    <string name="strict_hours">%1$d h</string>
+    <string name="strict_start">Start strict lock</string>
+    <string name="strict_extend">Extend strict lock</string>
+    <string name="strict_confirm_body">This cannot be undone for %1$s. Strict lock is a speed bump, not a vault: restarting in safe mode or removing the app with a computer still works, and that is on purpose for emergencies.</string>
+    <string name="strict_confirm">Yes, lock for %1$s</string>
+    <string name="strict_cancel">Cancel</string>
+    <string name="notice_strict_locked">Strict lock is running, so that change is not allowed until it ends.</string>
+    <string name="notice_need_detection">Turn on the Accessibility service (or Usage access plus Display over other apps) first, otherwise blocking cannot work.</string>
+
+    <string name="picker_title">Choose apps to guard</string>
+    <string name="picker_search">Search apps</string>
+    <string name="picker_all">All</string>
+    <string name="picker_selected_count">%1$d selected</string>
+    <string name="picker_select_shown">Select all %1$d shown</string>
+    <string name="picker_unselect_shown">Unselect shown</string>
+    <string name="picker_empty">No apps match.</string>
 </resources>
