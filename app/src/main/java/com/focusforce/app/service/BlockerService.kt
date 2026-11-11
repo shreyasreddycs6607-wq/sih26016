@@ -19,7 +19,12 @@ import androidx.core.app.ServiceCompat
 import com.focusforce.app.MainActivity
 import com.focusforce.app.R
 import com.focusforce.app.data.blocking.BlockCoordinator
+import com.focusforce.app.data.focus.BreakNudger
+import com.focusforce.app.data.focus.FocusPrefs
+import com.focusforce.app.data.focus.PomodoroController
 import com.focusforce.app.data.usage.UsageStatsReader
+import com.focusforce.app.domain.pomodoro.PomodoroPhase
+import com.focusforce.app.domain.pomodoro.PomodoroRun
 import com.focusforce.app.domain.blocking.ForegroundResolver
 import com.focusforce.app.domain.repo.BlockSettingsRepository
 import com.focusforce.app.domain.repo.BlockedAppsRepository
@@ -50,6 +55,9 @@ class BlockerService : Service() {
     @Inject lateinit var permissions: PermissionChecker
     @Inject lateinit var settings: BlockSettingsRepository
     @Inject lateinit var blockedApps: BlockedAppsRepository
+    @Inject lateinit var prefs: FocusPrefs
+    @Inject lateinit var pomodoro: PomodoroController
+    @Inject lateinit var breakNudger: BreakNudger
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private var anchor: View? = null
@@ -60,7 +68,7 @@ class BlockerService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createChannel()
         ServiceCompat.startForeground(
-            this, NOTIFICATION_ID, buildNotification(0, false),
+            this, NOTIFICATION_ID, buildNotification(0, false, null),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0,
         )
         if (!started) {
@@ -68,17 +76,18 @@ class BlockerService : Service() {
             addOverlayAnchor()
             scope.launch { observeState() }
             scope.launch { pollFallback() }
+            scope.launch { housekeeping() }
         }
         return START_STICKY
     }
 
     private suspend fun observeState() {
-        combine(settings.settings, blockedApps.observe()) { s, apps -> s to apps.size }.collect { (s, count) ->
+        combine(settings.settings, blockedApps.observe(), prefs.pomodoroRun) { s, apps, run -> Triple(s, apps.size, run) }.collect { (s, count, run) ->
             if (!s.enabled) {
                 stopSelf()
             } else {
                 getSystemService(NotificationManager::class.java)
-                    .notify(NOTIFICATION_ID, buildNotification(count, s.strictActive(System.currentTimeMillis())))
+                    .notify(NOTIFICATION_ID, buildNotification(count, s.strictActive(System.currentTimeMillis()), run))
             }
         }
     }
@@ -93,6 +102,24 @@ class BlockerService : Service() {
                     ?.let { coordinator.onForeground(it.packageName, it.className) }
             }
             delay(POLL_MS)
+        }
+    }
+
+    /**
+     * Timer work that no event triggers: re-check the app in front (a limit, schedule or focus block may have
+     * just started), advance Pomodoro if its alarm was missed, and send break reminders every two minutes.
+     */
+    private suspend fun housekeeping() {
+        val power = getSystemService(PowerManager::class.java)
+        var tick = 0
+        while (scope.isActive) {
+            if (power.isInteractive) {
+                coordinator.recheck()
+                pomodoro.sync()
+                if (tick % BREAK_EVERY_TICKS == 0) runCatching { breakNudger.tick() }
+                tick++
+            }
+            delay(RECHECK_MS)
         }
     }
 
@@ -119,12 +146,22 @@ class BlockerService : Service() {
         getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
     }
 
-    private fun buildNotification(guarded: Int, strict: Boolean): Notification {
+    private fun buildNotification(guarded: Int, strict: Boolean, run: PomodoroRun?): Notification {
         val open = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_shield)
             .setContentTitle(getString(if (strict) R.string.notif_title_strict else R.string.notif_title))
             .setContentText(getString(R.string.notif_text, guarded))
+        if (run != null) {
+            // Ongoing countdown without per-second updates: the system draws the chronometer itself.
+            builder.setContentTitle(getString(if (run.phase == PomodoroPhase.FOCUS) R.string.notif_pomo_focus else R.string.notif_pomo_break))
+                .setContentText(getString(R.string.notif_pomo_remaining))
+                .setUsesChronometer(true)
+                .setChronometerCountDown(true)
+                .setWhen(run.phaseEndMs)
+                .setShowWhen(true)
+        }
+        return builder
             .setContentIntent(open)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
@@ -145,5 +182,7 @@ class BlockerService : Service() {
         const val NOTIFICATION_ID = 1001
         const val POLL_MS = 1_000L
         const val LOOKBACK_MS = 15_000L
+        const val RECHECK_MS = 5_000L
+        const val BREAK_EVERY_TICKS = 24 // 24 x 5 s = 2 minutes
     }
 }

@@ -75,7 +75,7 @@ fun AppPickerScreen(onBack: () -> Unit, viewModel: AppPickerViewModel = hiltView
                             color = c.textMuted,
                             modifier = Modifier.weight(1f),
                         )
-                        if (ui.apps.isNotEmpty()) {
+                        if (ui.apps.isNotEmpty() && !ui.single) {
                             FocusButton(
                                 stringResource(if (ui.allShownSelected) R.string.picker_unselect_shown else R.string.picker_select_shown, ui.apps.size),
                                 viewModel::toggleAllShown,
@@ -93,7 +93,10 @@ fun AppPickerScreen(onBack: () -> Unit, viewModel: AppPickerViewModel = hiltView
                         ) {
                             items(ui.apps, key = { it.packageName }) { app ->
                                 FocusCard(
-                                    Modifier.fillMaxWidth().toggleable(value = app.selected, role = Role.Checkbox) { viewModel.toggle(app) },
+                                    Modifier.fillMaxWidth().toggleable(value = app.selected, role = if (ui.single) Role.RadioButton else Role.Checkbox) {
+                                        viewModel.toggle(app)
+                                        if (ui.single) onBack()
+                                    },
                                     selected = app.selected,
                                     contentPadding = FocusTheme.spacing.md,
                                 ) {

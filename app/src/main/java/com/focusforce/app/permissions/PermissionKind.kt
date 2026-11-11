@@ -16,7 +16,8 @@ enum class PermissionKind(val minSdk: Int, val essential: Boolean) {
     ACCESSIBILITY(Build.VERSION_CODES.LOLLIPOP, true),
     NOTIFICATIONS(Build.VERSION_CODES.TIRAMISU, false),
     BATTERY(Build.VERSION_CODES.M, false),
-    EXACT_ALARMS(Build.VERSION_CODES.S, false);
+    EXACT_ALARMS(Build.VERSION_CODES.S, false),
+    DND_ACCESS(Build.VERSION_CODES.M, false);
 
     fun isApplicable(sdk: Int = Build.VERSION.SDK_INT): Boolean = sdk >= minSdk
 

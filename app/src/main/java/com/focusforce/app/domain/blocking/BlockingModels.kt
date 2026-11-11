@@ -33,7 +33,7 @@ data class PassState(
     }
 }
 
-enum class BlockReason { BLOCKED_APP, STRICT_SETTINGS, STRICT_UNINSTALL }
+enum class BlockReason { BLOCKED_APP, LIMIT_REACHED, SCHEDULE, POMODORO, STRICT_SETTINGS, STRICT_UNINSTALL }
 
 sealed interface BlockDecision {
     data object Allow : BlockDecision

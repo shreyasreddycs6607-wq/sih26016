@@ -2,6 +2,7 @@ package com.focusforce.app.permissions
 
 import android.app.AlarmManager
 import android.app.AppOpsManager
+import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
@@ -29,6 +30,7 @@ class PermissionChecker @Inject constructor(
             PermissionKind.NOTIFICATIONS -> NotificationManagerCompat.from(context).areNotificationsEnabled()
             PermissionKind.BATTERY -> context.getSystemService(PowerManager::class.java)
                 .isIgnoringBatteryOptimizations(context.packageName)
+            PermissionKind.DND_ACCESS -> context.getSystemService(NotificationManager::class.java).isNotificationPolicyAccessGranted
             PermissionKind.EXACT_ALARMS -> Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
                 context.getSystemService(AlarmManager::class.java).canScheduleExactAlarms()
         }

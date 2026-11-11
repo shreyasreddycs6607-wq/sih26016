@@ -85,8 +85,12 @@ fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
             HeroTheme.DASH -> R.string.block_banner_dash
         },
     )
+    val isAppReason = ui.reason != BlockReason.STRICT_SETTINGS && ui.reason != BlockReason.STRICT_UNINSTALL
     val title = when (ui.reason) {
         BlockReason.BLOCKED_APP -> stringResource(R.string.block_title, ui.label)
+        BlockReason.LIMIT_REACHED -> stringResource(R.string.block_title_limit, ui.label)
+        BlockReason.SCHEDULE -> stringResource(R.string.block_title_schedule, ui.label)
+        BlockReason.POMODORO -> stringResource(R.string.block_title_pomodoro)
         BlockReason.STRICT_SETTINGS -> stringResource(R.string.block_title_settings)
         BlockReason.STRICT_UNINSTALL -> stringResource(R.string.block_title_uninstall)
     }
@@ -120,7 +124,7 @@ fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
                     contentDescription = stringResource(R.string.block_mascot_description, stringResource(ui.hero.nameRes)),
                 )
                 Spacer(Modifier.height(FocusTheme.spacing.md))
-                if (ui.reason == BlockReason.BLOCKED_APP) {
+                if (isAppReason) {
                     AppIcon(ui.packageName, size = 40.dp)
                     Spacer(Modifier.height(FocusTheme.spacing.sm))
                 }
@@ -138,6 +142,9 @@ fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
                         when {
                             ui.reason == BlockReason.STRICT_SETTINGS -> R.string.block_reason_settings
                             ui.reason == BlockReason.STRICT_UNINSTALL -> R.string.block_reason_uninstall
+                            ui.reason == BlockReason.LIMIT_REACHED -> R.string.block_limit_note
+                            ui.reason == BlockReason.SCHEDULE -> R.string.block_schedule_note
+                            ui.reason == BlockReason.POMODORO -> R.string.block_pomodoro_note
                             ui.strictActive -> R.string.block_strict_note
                             else -> R.string.block_default_note
                         },
@@ -148,7 +155,7 @@ fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
                 )
                 Spacer(Modifier.height(FocusTheme.spacing.xl))
                 FocusButton(stringResource(R.string.block_go_home), onHome, Modifier.fillMaxWidth())
-                if (ui.reason == BlockReason.BLOCKED_APP) {
+                if (isAppReason) {
                     Spacer(Modifier.height(FocusTheme.spacing.md))
                     if (ui.canPass) {
                         FocusButton(
@@ -159,7 +166,13 @@ fun BlockScreen(ui: BlockUiState, onHome: () -> Unit, onPass: () -> Unit) {
                         )
                     } else {
                         Text(
-                            stringResource(if (ui.strictActive) R.string.block_no_pass_strict else R.string.block_no_pass_left),
+                            stringResource(
+                                when {
+                                    ui.reason == BlockReason.POMODORO -> R.string.block_no_pass_pomodoro
+                                    ui.strictActive -> R.string.block_no_pass_strict
+                                    else -> R.string.block_no_pass_left
+                                },
+                            ),
                             style = t.typography.label,
                             color = c.textMuted,
                             textAlign = TextAlign.Center,

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
@@ -30,6 +31,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.focusforce.app.ui.theme.FocusTheme
 
 /** Labelled on/off switch in the hero's style. The whole row is the touch target (min 48dp tall). */
@@ -119,5 +121,53 @@ fun FocusCheckMark(checked: Boolean, modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center,
     ) {
         if (checked) FocusIconView(FocusIcon.Check, c.onPrimary, size = 18.dp)
+    }
+}
+
+/** Seven weekday toggles (Mon..Sun). Each reads its full day name to TalkBack. */
+@Composable
+fun DayPicker(mask: Int, onChange: (Int) -> Unit, modifier: Modifier = Modifier) {
+    val t = FocusTheme.tokens
+    val c = t.colors
+    val haptic = rememberHaptics()
+    val locale = java.util.Locale.getDefault()
+    Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        java.time.DayOfWeek.entries.forEach { day ->
+            val on = com.focusforce.app.domain.limits.DaysMask.has(mask, day)
+            val full = day.getDisplayName(java.time.format.TextStyle.FULL, locale)
+            Box(
+                Modifier.weight(1f).heightIn(min = 44.dp).clip(t.shapes.small)
+                    .background(if (on) c.primary else c.surfaceHigh)
+                    .border(t.strokeWidth.coerceAtLeast(1.dp), c.outline, t.shapes.small)
+                    .toggleable(value = on, role = Role.Checkbox) {
+                        haptic(Haptic.Tick)
+                        onChange(com.focusforce.app.domain.limits.DaysMask.toggle(mask, day))
+                    }
+                    .semantics { contentDescription = full },
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(day.getDisplayName(java.time.format.TextStyle.NARROW, locale), style = t.typography.label, color = if (on) c.onPrimary else c.text)
+            }
+        }
+    }
+}
+
+/** "Label    [-]  value  [+]" row for numbers that move in fixed steps. */
+@Composable
+fun StepperRow(
+    label: String,
+    value: String,
+    onMinus: () -> Unit,
+    onPlus: () -> Unit,
+    modifier: Modifier = Modifier,
+    minusEnabled: Boolean = true,
+    plusEnabled: Boolean = true,
+) {
+    val t = FocusTheme.tokens
+    Row(modifier.fillMaxWidth().heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(FocusTheme.spacing.sm)) {
+        Text(label, style = t.typography.body, color = t.colors.text, modifier = Modifier.weight(1f))
+        FocusButton("−", onMinus, enabled = minusEnabled, style = ButtonStyle.Secondary)
+        Text(value, style = t.typography.numeral.copy(fontSize = 18.sp), color = t.colors.primary, modifier = Modifier.widthIn(min = 64.dp), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        FocusButton("+", onPlus, enabled = plusEnabled, style = ButtonStyle.Secondary)
     }
 }

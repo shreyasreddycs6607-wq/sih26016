@@ -97,6 +97,9 @@
                 android:value="Digital wellbeing app blocker: keeps the user-chosen app blocking running and shows its status notification" />
         </service>
 
+        <receiver android:name=".service.PomodoroAlarmReceiver" android:exported="false" />
+        <receiver android:name=".service.ScheduleAlarmReceiver" android:exported="false" />
+
         <receiver
             android:name=".service.BootReceiver"
             android:exported="false">

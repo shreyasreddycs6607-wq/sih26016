@@ -3,6 +3,8 @@ package com.focusforce.app
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import com.focusforce.app.data.focus.FocusEnvironment
+import com.focusforce.app.data.focus.PomodoroController
 import com.focusforce.app.data.usage.UsageSyncWorker
 import com.focusforce.app.domain.repo.BlockSettingsRepository
 import com.focusforce.app.service.BlockerController
@@ -18,6 +20,8 @@ class FocusForceApp : Application(), Configuration.Provider {
 
     @Inject lateinit var workerFactory: HiltWorkerFactory
     @Inject lateinit var blockSettings: BlockSettingsRepository
+    @Inject lateinit var pomodoro: PomodoroController
+    @Inject lateinit var environment: FocusEnvironment
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder().setWorkerFactory(workerFactory).build()
@@ -28,6 +32,9 @@ class FocusForceApp : Application(), Configuration.Provider {
         // Process death recovery: whenever the process starts and blocking is on, bring the service back.
         CoroutineScope(Dispatchers.Default).launch {
             if (blockSettings.settings.first().enabled) BlockerController.ensureRunning(this@FocusForceApp)
+            pomodoro.sync()
+            pomodoro.rearm()
+            environment.refresh()
         }
     }
 }

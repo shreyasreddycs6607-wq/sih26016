@@ -22,6 +22,7 @@ val PermissionKind.copy: PermissionCopy
         PermissionKind.ACCESSIBILITY -> PermissionCopy(R.string.perm_accessibility_title, R.string.perm_accessibility_why, R.string.perm_accessibility_never, R.string.perm_accessibility_action, FocusIcon.Eye)
         PermissionKind.NOTIFICATIONS -> PermissionCopy(R.string.perm_notifications_title, R.string.perm_notifications_why, R.string.perm_notifications_never, R.string.perm_notifications_action, FocusIcon.Bell)
         PermissionKind.BATTERY -> PermissionCopy(R.string.perm_battery_title, R.string.perm_battery_why, R.string.perm_battery_never, R.string.perm_battery_action, FocusIcon.Battery)
+        PermissionKind.DND_ACCESS -> PermissionCopy(R.string.perm_dnd_title, R.string.perm_dnd_why, R.string.perm_dnd_never, R.string.perm_dnd_action, FocusIcon.Bell)
         PermissionKind.EXACT_ALARMS -> PermissionCopy(R.string.perm_alarms_title, R.string.perm_alarms_why, R.string.perm_alarms_never, R.string.perm_alarms_action, FocusIcon.Alarm)
     }
 

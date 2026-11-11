@@ -13,6 +13,12 @@ data class BlockContext(
     val neverBlock: Set<String>,
     val guardedSettings: Set<String> = SafetyPackages.settingsApps,
     val installers: Set<String> = SafetyPackages.installers,
+    /** Apps over a daily limit right now. */
+    val limitReached: Set<String> = emptySet(),
+    /** Apps blocked by a focus schedule that is active now. */
+    val scheduleBlocked: Set<String> = emptySet(),
+    /** Apps blocked by a running Pomodoro FOCUS phase (empty during breaks or when none runs). */
+    val pomodoroBlocked: Set<String> = emptySet(),
 )
 
 object BlockDecisionEngine {
@@ -32,13 +38,23 @@ object BlockDecisionEngine {
                 return BlockDecision.Block(packageName, BlockReason.STRICT_UNINSTALL, canPass = false, passesLeft = 0)
             }
         }
-        if (!ctx.settings.enabled || packageName !in ctx.blocked) return BlockDecision.Allow
-        if (ctx.pass.activeUntil(packageName, nowMs) != null) return BlockDecision.Allow
+        if (!ctx.settings.enabled) return BlockDecision.Allow
 
         val left = ctx.pass.remaining(today)
+        // A running Pomodoro focus block cannot be bought off with a pass: stop the timer instead.
+        if (packageName in ctx.pomodoroBlocked) {
+            return BlockDecision.Block(packageName, BlockReason.POMODORO, canPass = false, passesLeft = left)
+        }
+        val reason = when {
+            packageName in ctx.limitReached -> BlockReason.LIMIT_REACHED
+            packageName in ctx.scheduleBlocked -> BlockReason.SCHEDULE
+            packageName in ctx.blocked -> BlockReason.BLOCKED_APP
+            else -> return BlockDecision.Allow
+        }
+        if (ctx.pass.activeUntil(packageName, nowMs) != null) return BlockDecision.Allow
         return BlockDecision.Block(
             packageName = packageName,
-            reason = BlockReason.BLOCKED_APP,
+            reason = reason,
             canPass = ctx.settings.passesEnabled && !strict && left > 0,
             passesLeft = left,
         )

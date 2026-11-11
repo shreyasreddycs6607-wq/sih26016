@@ -9,6 +9,10 @@ import androidx.navigation.compose.rememberNavController
 import com.focusforce.app.ui.AppViewModel
 import com.focusforce.app.ui.debug.GalleryScreen
 import com.focusforce.app.ui.blocks.AppPickerScreen
+import com.focusforce.app.ui.blocks.PickerBridge
+import com.focusforce.app.ui.focus.GroupEditorScreen
+import com.focusforce.app.ui.focus.LimitEditorScreen
+import com.focusforce.app.ui.focus.ScheduleEditorScreen
 import com.focusforce.app.ui.insights.AppDetailScreen
 import com.focusforce.app.ui.insights.CategoriesScreen
 import com.focusforce.app.ui.main.MainScaffold
@@ -23,7 +27,10 @@ import kotlinx.serialization.Serializable
 @Serializable data object Gallery
 @Serializable data class AppDetail(val packageName: String)
 @Serializable data object Categories
-@Serializable data object AppPicker
+@Serializable data class AppPicker(val mode: String = "blocked")
+@Serializable data class ScheduleEditor(val id: Long = 0)
+@Serializable data class LimitEditor(val id: Long = 0)
+@Serializable data class GroupEditor(val id: Long = 0)
 
 @Composable
 fun FocusNavHost(onboardingComplete: Boolean, appViewModel: AppViewModel = hiltViewModel()) {
@@ -44,7 +51,10 @@ fun FocusNavHost(onboardingComplete: Boolean, appViewModel: AppViewModel = hiltV
                 onOpenGallery = { navController.navigate(Gallery) },
                 onOpenApp = { navController.navigate(AppDetail(it)) },
                 onOpenCategories = { navController.navigate(Categories) },
-                onOpenPicker = { navController.navigate(AppPicker) },
+                onOpenPicker = { navController.navigate(AppPicker()) },
+                onOpenScheduleEditor = { navController.navigate(ScheduleEditor(it)) },
+                onOpenLimitEditor = { navController.navigate(LimitEditor(it)) },
+                onOpenGroupEditor = { navController.navigate(GroupEditor(it)) },
             )
         }
         composable<PermissionStatus> { PermissionStatusScreen(onBack = { navController.popBackStack() }) }
@@ -52,5 +62,14 @@ fun FocusNavHost(onboardingComplete: Boolean, appViewModel: AppViewModel = hiltV
         composable<AppDetail> { AppDetailScreen(onBack = { navController.popBackStack() }) }
         composable<Categories> { CategoriesScreen(onBack = { navController.popBackStack() }) }
         composable<AppPicker> { AppPickerScreen(onBack = { navController.popBackStack() }) }
+        composable<ScheduleEditor> {
+            ScheduleEditorScreen(onBack = { navController.popBackStack() }, onPickApps = { navController.navigate(AppPicker(PickerBridge.MODE_MULTI)) })
+        }
+        composable<LimitEditor> {
+            LimitEditorScreen(onBack = { navController.popBackStack() }, onPickApp = { navController.navigate(AppPicker(PickerBridge.MODE_SINGLE)) })
+        }
+        composable<GroupEditor> {
+            GroupEditorScreen(onBack = { navController.popBackStack() }, onPickApps = { navController.navigate(AppPicker(PickerBridge.MODE_MULTI)) })
+        }
     }
 }

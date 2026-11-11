@@ -18,13 +18,6 @@
     <string name="tab_insights">Insights</string>
     <string name="tab_blocks">Blocks</string>
     <string name="tab_profile">Profile</string>
-    <string name="phase_4">Arrives with limits, schedules and focus (Phase 4)</string>
-    <string name="focus_desc">Pomodoro sessions that block distracting apps while they run, with a power-up when you start and a celebration when you finish.</string>
-    <string-array name="focus_bullets">
-        <item>Custom Pomodoro lengths with a long-break cycle</item>
-        <item>Named profiles: Study, Sleep, Work, Family</item>
-        <item>Daily limits with warnings at 80 and 100 percent of your limit</item>
-    </string-array>
 
     <!-- Heroes -->
     <string name="hero_vector_name">Vector</string>
@@ -316,4 +309,136 @@
     <string name="picker_select_shown">Select all %1$d shown</string>
     <string name="picker_unselect_shown">Unselect shown</string>
     <string name="picker_empty">No apps match.</string>
+
+    <!-- Phase 4: block reasons -->
+    <string name="block_title_limit">%1$s: daily limit reached</string>
+    <string name="block_title_schedule">%1$s is off limits right now</string>
+    <string name="block_title_pomodoro">Focus block running</string>
+    <string name="block_limit_note">You have used all of today\'s time for this app. The limit resets at midnight.</string>
+    <string name="block_schedule_note">One of your focus schedules is running. This app is back when it ends.</string>
+    <string name="block_pomodoro_note">Your Pomodoro focus block is running. Finish it, or stop the timer in FocusForce, to get your apps back.</string>
+    <string name="block_no_pass_pomodoro">No passes during a focus block.</string>
+
+    <!-- Phase 4: focus, limits, schedules, nudges -->
+    <string name="action_edit">Edit</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="days_every_day">Every day</string>
+    <string name="days_weekdays">Weekdays</string>
+    <string name="days_weekend">Weekends</string>
+    <string name="focus_needs_detection">Focus features need a way to see which app is open. Turn on the Accessibility service (or Usage access plus Display over other apps).</string>
+    <string name="focus_blocking_off">Blocking is switched off, so schedules, limits and Pomodoro will not block anything. Starting a Pomodoro switches it on.</string>
+
+    <string name="pomo_title">Pomodoro</string>
+    <string name="pomo_idle_body">Work in focused blocks with short breaks. While a focus block runs, your guarded apps and your distracting apps are blocked. Breaks unlock them.</string>
+    <string name="pomo_cfg_focus">Focus block</string>
+    <string name="pomo_cfg_short">Short break</string>
+    <string name="pomo_cfg_long">Long break</string>
+    <string name="pomo_cfg_cycles">Blocks before long break</string>
+    <string name="pomo_silence">Silence notifications while focusing</string>
+    <string name="pomo_silence_desc">Uses Do Not Disturb if you allowed it. Put back exactly as it was afterwards.</string>
+    <string name="pomo_start">Start Pomodoro</string>
+    <string name="pomo_stop">Stop Pomodoro</string>
+    <string name="pomo_phase_focus">Focus</string>
+    <string name="pomo_phase_short">Short break</string>
+    <string name="pomo_phase_long">Long break</string>
+    <string name="pomo_ring_spoken">%1$s, %2$d minutes %3$d seconds left</string>
+    <string name="pomo_progress">Focus blocks done: %1$d of %2$d</string>
+    <string name="pomo_stats">Today: %1$d blocks, %2$d min. Last 7 days: %3$d min.</string>
+    <string name="pomo_history_done">%1$d min focus, finished %2$s</string>
+    <string name="pomo_history_stopped">%1$d min, stopped early (%2$s)</string>
+
+    <string name="sched_title">Focus schedules</string>
+    <string name="sched_empty">No schedules yet. Try Study, Sleep, Work or Family.</string>
+    <string name="sched_add">Add schedule</string>
+    <string name="sched_new">New schedule</string>
+    <string name="sched_edit">Edit schedule</string>
+    <string name="sched_running">%1$s (running now)</string>
+    <string name="sched_summary">%1$s to %2$s · %3$s · %4$d apps</string>
+    <string name="sched_presets">Start from</string>
+    <string name="preset_study">Study</string>
+    <string name="preset_sleep">Sleep</string>
+    <string name="preset_work">Work</string>
+    <string name="preset_family">Family</string>
+    <string name="editor_name">Name</string>
+    <string name="editor_days">Days</string>
+    <string name="sched_start">Starts</string>
+    <string name="sched_end">Ends</string>
+    <string name="sched_overnight">This one runs past midnight and belongs to the day it starts.</string>
+    <string name="sched_apps">Blocked apps</string>
+    <string name="sched_apps_count">%1$d apps selected</string>
+    <string name="sched_choose_apps">Choose apps</string>
+    <string name="sched_sites">Blocked websites</string>
+    <string name="sched_sites_hint">reddit.com, tiktok.com</string>
+    <string name="sched_sites_note">Saved with this profile. Website blocking itself arrives in a later update, so nothing is enforced for sites yet.</string>
+    <string name="sched_silence">Silence notifications</string>
+    <string name="sched_silence_desc">Turns on Do Not Disturb while this profile runs (needs Do Not Disturb access) and restores it afterwards.</string>
+    <string name="editor_need_name">Give it a name first.</string>
+    <string name="editor_need_times">Start and end must be different times.</string>
+    <string name="editor_need_days">Pick at least one day.</string>
+    <string name="editor_need_app">Choose an app first.</string>
+    <string name="editor_need_group">Choose a group first.</string>
+    <string name="editor_need_apps">Choose at least one app.</string>
+
+    <string name="limit_title">Daily limits</string>
+    <string name="limit_empty">No limits yet. Set a daily time limit for an app or a group of apps.</string>
+    <string name="limit_add">Add limit</string>
+    <string name="limit_new">New limit</string>
+    <string name="limit_edit">Edit limit</string>
+    <string name="limit_summary">%1$s of %2$s · %3$s</string>
+    <string name="limit_progress_spoken">%1$s: %2$s used of %3$s</string>
+    <string name="limit_kind_app">One app</string>
+    <string name="limit_kind_group">A group</string>
+    <string name="limit_choose_app">Choose app</string>
+    <string name="limit_change_app">Change app</string>
+    <string name="limit_no_groups">No groups yet. Create one on the Focus tab first.</string>
+    <string name="limit_per_day">Limit per day</string>
+    <string name="limit_explain">You get a warning at 80 percent and again at 100 percent, then the app is blocked until midnight. Passes can buy a little extra time unless a strict lock is on.</string>
+    <string name="group_title">App groups</string>
+    <string name="group_empty">No groups yet. A group (for example Social) shares one limit across all its apps.</string>
+    <string name="group_add">Add group</string>
+    <string name="group_new">New group</string>
+    <string name="group_edit">Edit group</string>
+    <string name="group_row">%1$s (%2$d apps)</string>
+    <string name="group_explain">A limit on a group counts the time of all its apps together.</string>
+
+    <string name="nudge_title">Mindful nudges</string>
+    <string name="nudge_break">Break reminders</string>
+    <string name="nudge_break_desc">A gentle reminder when you have been on your phone for a long unbroken stretch.</string>
+    <string name="nudge_after">Remind me after</string>
+    <string name="dnd_hint">Do Not Disturb access is off, so focus profiles and Pomodoro cannot silence notifications. Everything else still works.</string>
+
+    <string name="moment_vector_start">SYSTEMS ONLINE</string>
+    <string name="moment_vector_done">SESSION COMPLETE</string>
+    <string name="moment_noctis_start">The night is yours</string>
+    <string name="moment_noctis_done">Well watched, sentinel</string>
+    <string name="moment_dash_start">POWER UP!</string>
+    <string name="moment_dash_done">KAPOW! Nailed it!</string>
+
+    <string name="notif_channel_alerts">Focus alerts</string>
+    <string name="notif_limit_warn_title">%1$s is close to its limit</string>
+    <string name="notif_limit_warn_text">%1$d of %2$d minutes used today.</string>
+    <string name="notif_limit_reached_title">%1$s: daily limit reached</string>
+    <string name="notif_limit_reached_text">It is blocked until midnight.</string>
+    <string name="notif_pomo_focus">Pomodoro: focus</string>
+    <string name="notif_pomo_break">Pomodoro: break</string>
+    <string name="notif_pomo_remaining">Time left in this phase</string>
+    <string name="notif_pomo_focus_done">Focus block complete</string>
+    <string name="notif_pomo_focus_done_text">Nice work. Your apps are back for the break.</string>
+    <string name="notif_pomo_break_title">Break time</string>
+    <string name="notif_pomo_break_text">Stand up, stretch, look away from the screen.</string>
+    <string name="notif_pomo_long_break_text">Long break. You earned it.</string>
+    <string name="notif_pomo_set_done">Pomodoro set complete</string>
+    <string name="notif_pomo_set_done_text">All your focus blocks are done.</string>
+    <string name="notif_schedule_started">%1$s focus profile started</string>
+    <string name="notif_schedule_started_text">%1$d apps are blocked until it ends.</string>
+    <string name="notif_schedule_ended">%1$s focus profile ended</string>
+    <string name="notif_schedule_ended_text">Your apps are back.</string>
+    <string name="notif_break_title">Time for a break</string>
+    <string name="notif_break_text">You have been on your phone for about %1$d minutes. Look up, breathe, stretch.</string>
+
+    <string name="perm_dnd_title">Do Not Disturb access</string>
+    <string name="perm_dnd_why">Lets focus profiles and Pomodoro switch Do Not Disturb on while you focus, and put it back exactly as it was afterwards.</string>
+    <string name="perm_dnd_never">We cannot read your notifications with this access, and we never change Do Not Disturb outside your own schedules and focus blocks. It is optional: everything else works without it.</string>
+    <string name="perm_dnd_action">Open Do Not Disturb access</string>
 </resources>

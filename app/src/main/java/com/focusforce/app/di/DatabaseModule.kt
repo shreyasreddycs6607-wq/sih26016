@@ -5,12 +5,16 @@ import androidx.room.Room
 import com.focusforce.app.data.db.AppDatabase
 import com.focusforce.app.data.db.BlockedAppDao
 import com.focusforce.app.data.db.CategoryDao
+import com.focusforce.app.data.db.FocusDao
 import com.focusforce.app.data.db.MIGRATION_1_2
+import com.focusforce.app.data.db.MIGRATION_2_3
 import com.focusforce.app.data.db.UsageDao
 import com.focusforce.app.data.usage.UsageRepositoryImpl
 import com.focusforce.app.data.blocking.BlockSettingsRepositoryImpl
 import com.focusforce.app.data.blocking.BlockedAppsRepositoryImpl
+import com.focusforce.app.data.focus.FocusRepositoryImpl
 import com.focusforce.app.domain.repo.BlockSettingsRepository
+import com.focusforce.app.domain.repo.FocusRepository
 import com.focusforce.app.domain.repo.BlockedAppsRepository
 import com.focusforce.app.domain.repo.UsageRepository
 import dagger.Binds
@@ -28,12 +32,13 @@ object DatabaseModule {
     @Singleton
     fun database(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, AppDatabase.NAME)
-            .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
             .build()
 
     @Provides fun usageDao(db: AppDatabase): UsageDao = db.usageDao()
     @Provides fun categoryDao(db: AppDatabase): CategoryDao = db.categoryDao()
     @Provides fun blockedAppDao(db: AppDatabase): BlockedAppDao = db.blockedAppDao()
+    @Provides fun focusDao(db: AppDatabase): FocusDao = db.focusDao()
 }
 
 @Module
@@ -46,6 +51,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindBlockSettings(impl: BlockSettingsRepositoryImpl): BlockSettingsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFocusRepository(impl: FocusRepositoryImpl): FocusRepository
 
     @Binds
     @Singleton

@@ -29,6 +29,8 @@ data class BlockUiState(
     val strictActive: Boolean,
 )
 
+private val PASSABLE = setOf(BlockReason.BLOCKED_APP, BlockReason.LIMIT_REACHED, BlockReason.SCHEDULE)
+
 @HiltViewModel
 class BlockViewModel @Inject constructor(
     appSettings: SettingsRepository,
@@ -50,7 +52,7 @@ class BlockViewModel @Inject constructor(
                 packageName = pkg,
                 label = appInfo.label(pkg),
                 reason = reason,
-                canPass = reason == BlockReason.BLOCKED_APP && BlockingRules.canGrantPass(block, pass, now, today),
+                canPass = reason in PASSABLE && BlockingRules.canGrantPass(block, pass, now, today),
                 passesLeft = pass.remaining(today),
                 strictActive = block.strictActive(now),
             )

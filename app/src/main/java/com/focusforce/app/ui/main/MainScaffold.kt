@@ -34,6 +34,7 @@ import com.focusforce.app.ui.components.FocusIcon
 import com.focusforce.app.ui.components.ThemedBackground
 import com.focusforce.app.ui.components.UpcomingFeature
 import com.focusforce.app.ui.blocks.BlocksScreen
+import com.focusforce.app.ui.focus.FocusScreen
 import com.focusforce.app.ui.insights.InsightsScreen
 import com.focusforce.app.ui.theme.FocusTheme
 
@@ -53,6 +54,9 @@ fun MainScaffold(
     onOpenApp: (String) -> Unit,
     onOpenCategories: () -> Unit,
     onOpenPicker: () -> Unit,
+    onOpenScheduleEditor: (Long) -> Unit,
+    onOpenLimitEditor: (Long) -> Unit,
+    onOpenGroupEditor: (Long) -> Unit,
     appViewModel: AppViewModel = hiltViewModel(),
 ) {
     val settings by appViewModel.settings.collectAsStateWithLifecycle()
@@ -75,12 +79,7 @@ fun MainScaffold(
                 ) { index ->
                     when (Tab.entries[index]) {
                         Tab.Home -> HomeScreen(current, onOpenPermissions, onOpenApp)
-                        Tab.Focus -> UpcomingFeature(
-                            stringResource(R.string.tab_focus),
-                            stringResource(R.string.phase_4),
-                            stringResource(R.string.focus_desc),
-                            stringArrayItems(R.array.focus_bullets),
-                        )
+                        Tab.Focus -> FocusScreen(onOpenPermissions, onOpenScheduleEditor, onOpenLimitEditor, onOpenGroupEditor)
                         Tab.Insights -> InsightsScreen(onOpenApp, onOpenCategories, onOpenPermissions)
                         Tab.Blocks -> BlocksScreen(onOpenPicker, onOpenPermissions)
                         Tab.Profile -> ProfileScreen(current, appViewModel, onOpenPermissions, onOpenGallery)
