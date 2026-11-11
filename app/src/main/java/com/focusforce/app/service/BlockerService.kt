@@ -22,6 +22,7 @@ import com.focusforce.app.data.blocking.BlockCoordinator
 import com.focusforce.app.data.focus.BreakNudger
 import com.focusforce.app.data.focus.FocusPrefs
 import com.focusforce.app.data.focus.PomodoroController
+import com.focusforce.app.data.social.SocialSync
 import com.focusforce.app.data.usage.UsageStatsReader
 import com.focusforce.app.domain.pomodoro.PomodoroPhase
 import com.focusforce.app.domain.pomodoro.PomodoroRun
@@ -58,6 +59,7 @@ class BlockerService : Service() {
     @Inject lateinit var prefs: FocusPrefs
     @Inject lateinit var pomodoro: PomodoroController
     @Inject lateinit var breakNudger: BreakNudger
+    @Inject lateinit var socialSync: SocialSync
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private var anchor: View? = null
@@ -116,6 +118,7 @@ class BlockerService : Service() {
             if (power.isInteractive) {
                 coordinator.recheck()
                 pomodoro.sync()
+                runCatching { socialSync.tick() }
                 if (tick % BREAK_EVERY_TICKS == 0) runCatching { breakNudger.tick() }
                 tick++
             }

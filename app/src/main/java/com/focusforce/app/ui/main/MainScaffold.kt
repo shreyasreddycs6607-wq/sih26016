@@ -54,6 +54,7 @@ fun MainScaffold(
     onOpenCategories: () -> Unit,
     onOpenPicker: () -> Unit,
     onOpenWeb: () -> Unit,
+    onOpenSocial: () -> Unit,
     onOpenScheduleEditor: (Long) -> Unit,
     onOpenLimitEditor: (Long) -> Unit,
     onOpenGroupEditor: (Long) -> Unit,
@@ -82,7 +83,7 @@ fun MainScaffold(
                         Tab.Focus -> FocusScreen(onOpenPermissions, onOpenScheduleEditor, onOpenLimitEditor, onOpenGroupEditor)
                         Tab.Insights -> InsightsScreen(onOpenApp, onOpenCategories, onOpenPermissions)
                         Tab.Blocks -> BlocksScreen(onOpenPicker, onOpenWeb, onOpenPermissions)
-                        Tab.Profile -> ProfileScreen(current, appViewModel, onOpenPermissions, onOpenGallery)
+                        Tab.Profile -> ProfileScreen(current, appViewModel, onOpenPermissions, onOpenGallery, onOpenSocial)
                     }
                 }
             }

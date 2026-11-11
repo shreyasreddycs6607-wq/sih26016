@@ -56,6 +56,18 @@ class PomodoroController @Inject constructor(
         environment.refresh()
     }
 
+    /** Joins a squad's shared focus block: same end moment as everyone else, then one break, then the set is over. */
+    suspend fun startGroup(session: com.focusforce.app.domain.social.GroupSession): Boolean = mutex.withLock {
+        val now = System.currentTimeMillis()
+        val run = com.focusforce.app.domain.social.GroupPomodoro.runFor(session, prefs.pomodoroConfig.first(), now) ?: return@withLock false
+        blocking.setEnabled(true)
+        prefs.setPomodoroRun(run)
+        BlockerController.ensureRunning(context)
+        arm(run)
+        environment.refresh()
+        true
+    }
+
     /** Ends the set early. Not allowed during a strict lock. */
     suspend fun stop(): Outcome = mutex.withLock {
         val now = System.currentTimeMillis()

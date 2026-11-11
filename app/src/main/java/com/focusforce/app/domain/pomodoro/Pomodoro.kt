@@ -11,7 +11,7 @@ data class PomodoroConfig(
 ) {
     fun coerced() = PomodoroConfig(
         focusMin.coerceIn(5, 120), shortBreakMin.coerceIn(1, 30),
-        longBreakMin.coerceIn(5, 60), cyclesBeforeLong.coerceIn(2, 8),
+        longBreakMin.coerceIn(5, 60), cyclesBeforeLong.coerceIn(1, 8), // 1 = a single block, used by group sessions
     )
 }
 

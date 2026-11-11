@@ -10,6 +10,7 @@ import com.focusforce.app.ui.AppViewModel
 import com.focusforce.app.ui.debug.GalleryScreen
 import com.focusforce.app.ui.blocks.AppPickerScreen
 import com.focusforce.app.ui.blocks.PickerBridge
+import com.focusforce.app.ui.social.SocialScreen
 import com.focusforce.app.ui.web.WebBlockingScreen
 import com.focusforce.app.ui.focus.GroupEditorScreen
 import com.focusforce.app.ui.focus.LimitEditorScreen
@@ -29,6 +30,7 @@ import kotlinx.serialization.Serializable
 @Serializable data class AppDetail(val packageName: String)
 @Serializable data object Categories
 @Serializable data object WebBlocking
+@Serializable data object Social
 @Serializable data class AppPicker(val mode: String = "blocked")
 @Serializable data class ScheduleEditor(val id: Long = 0)
 @Serializable data class LimitEditor(val id: Long = 0)
@@ -55,6 +57,7 @@ fun FocusNavHost(onboardingComplete: Boolean, appViewModel: AppViewModel = hiltV
                 onOpenCategories = { navController.navigate(Categories) },
                 onOpenPicker = { navController.navigate(AppPicker()) },
                 onOpenWeb = { navController.navigate(WebBlocking) },
+                onOpenSocial = { navController.navigate(Social) },
                 onOpenScheduleEditor = { navController.navigate(ScheduleEditor(it)) },
                 onOpenLimitEditor = { navController.navigate(LimitEditor(it)) },
                 onOpenGroupEditor = { navController.navigate(GroupEditor(it)) },
@@ -64,6 +67,7 @@ fun FocusNavHost(onboardingComplete: Boolean, appViewModel: AppViewModel = hiltV
         composable<Gallery> { GalleryScreen(onBack = { navController.popBackStack() }) }
         composable<AppDetail> { AppDetailScreen(onBack = { navController.popBackStack() }) }
         composable<Categories> { CategoriesScreen(onBack = { navController.popBackStack() }) }
+        composable<Social> { SocialScreen(onBack = { navController.popBackStack() }) }
         composable<WebBlocking> { WebBlockingScreen(onBack = { navController.popBackStack() }, onOpenPermissions = { navController.navigate(PermissionStatus) }) }
         composable<AppPicker> { AppPickerScreen(onBack = { navController.popBackStack() }) }
         composable<ScheduleEditor> {

@@ -211,6 +211,8 @@ class PomodoroTest {
     @Test fun configIsClamped() {
         val c = PomodoroConfig(focusMin = 1, shortBreakMin = 99, longBreakMin = 1, cyclesBeforeLong = 50).coerced()
         assertEquals(5, c.focusMin); assertEquals(30, c.shortBreakMin); assertEquals(5, c.longBreakMin); assertEquals(8, c.cyclesBeforeLong)
+        assertEquals(1, PomodoroConfig(cyclesBeforeLong = 1).coerced().cyclesBeforeLong)
+        assertEquals(1, PomodoroConfig(cyclesBeforeLong = -3).coerced().cyclesBeforeLong)
     }
 }
 
