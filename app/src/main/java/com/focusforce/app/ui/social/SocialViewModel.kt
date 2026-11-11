@@ -71,6 +71,7 @@ class SocialViewModel @Inject constructor(
     private val sync: SocialSync,
     private val pomodoro: PomodoroController,
     private val permissions: PermissionChecker,
+    private val entitlement: com.focusforce.app.data.billing.EntitlementRepository,
 ) : ViewModel() {
 
     private val week = WeekKey.of(LocalDate.now())
@@ -145,6 +146,7 @@ class SocialViewModel @Inject constructor(
     ) != DetectionMode.NONE
 
     fun startGroup(minutes: Int) {
+        if (!com.focusforce.app.domain.pro.ProPolicy.hasFeature(com.focusforce.app.domain.pro.ProFeature.GROUP_FOCUS, entitlement.isPro())) { notice.value = R.string.notice_pro_required; return }
         if (!detectionOk()) { notice.value = R.string.notice_need_detection; return }
         act({ backend.startGroupSession(minutes) }) { session ->
             if (!pomodoro.startGroup(session)) notice.value = R.string.social_group_too_late

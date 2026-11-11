@@ -112,6 +112,8 @@ class FocusPrefs @Inject constructor(
         store.edit { it[F.BREAK_ON] = v.breakRemindersEnabled; it[F.BREAK_AFTER] = v.breakAfterMin }
     }
 
+    suspend fun reset() { store.edit { it.clear() } }
+
     suspend fun lastBreakReminder(): Long = store.data.first()[F.BREAK_LAST] ?: 0L
     suspend fun setLastBreakReminder(ms: Long) { store.edit { it[F.BREAK_LAST] = ms } }
 

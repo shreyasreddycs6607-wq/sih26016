@@ -13,6 +13,7 @@ import com.focusforce.app.domain.repo.BlockedAppsRepository
 import com.focusforce.app.permissions.PermissionChecker
 import com.focusforce.app.permissions.PermissionKind
 import com.focusforce.app.service.BlockerController
+import com.focusforce.app.ui.util.noticeRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -100,14 +101,15 @@ class BlocksViewModel @Inject constructor(
                 notice.value = R.string.notice_need_detection
                 return@launch
             }
-            manager.startStrict(minutes)
-            BlockerController.ensureRunning(context)
+            val outcome = manager.startStrict(minutes)
+            outcome.noticeRes()?.let { notice.value = it }
+            if (outcome == Outcome.OK) BlockerController.ensureRunning(context)
         }
     }
 
     private fun launchAction(action: suspend () -> Outcome) {
         viewModelScope.launch {
-            if (action() == Outcome.DENIED_STRICT) notice.value = R.string.notice_strict_locked
+            action().noticeRes()?.let { notice.value = it }
         }
     }
 }

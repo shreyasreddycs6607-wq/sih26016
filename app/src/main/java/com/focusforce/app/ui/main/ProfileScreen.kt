@@ -50,6 +50,7 @@ fun ProfileScreen(
     onOpenPermissions: () -> Unit,
     onOpenGallery: () -> Unit,
     onOpenSocial: () -> Unit,
+    onOpenSettings: () -> Unit,
     game: GameViewModel = hiltViewModel(),
 ) {
     val c = FocusTheme.colors
@@ -108,6 +109,7 @@ fun ProfileScreen(
         }
 
         FocusButton(stringResource(R.string.social_open), onOpenSocial, Modifier.fillMaxWidth(), style = ButtonStyle.Secondary)
+        FocusButton(stringResource(R.string.settings_title), onOpenSettings, Modifier.fillMaxWidth(), style = ButtonStyle.Secondary)
 
         SectionLabel(stringResource(R.string.profile_hero_section))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(FocusTheme.spacing.md)) {

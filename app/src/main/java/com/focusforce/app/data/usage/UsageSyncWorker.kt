@@ -23,6 +23,7 @@ class UsageSyncWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = try {
         repository.refresh() // PERMISSION_MISSING is a normal no-op, not a failure
+        com.focusforce.app.widget.WidgetUpdater.updateAll(applicationContext)
         Result.success()
     } catch (e: CancellationException) {
         throw e

@@ -1,6 +1,9 @@
 package com.focusforce.app.data.web
 
+import com.focusforce.app.data.billing.EntitlementRepository
 import com.focusforce.app.data.blocking.Outcome
+import com.focusforce.app.domain.pro.ProFeature
+import com.focusforce.app.domain.pro.ProPolicy
 import com.focusforce.app.domain.blocking.BlockingRules
 import com.focusforce.app.domain.repo.BlockSettingsRepository
 import com.focusforce.app.domain.rules.SiteMatcher
@@ -14,16 +17,19 @@ import kotlinx.coroutines.flow.first
 class WebBlockManager @Inject constructor(
     private val prefs: WebPrefs,
     private val blockSettings: BlockSettingsRepository,
+    private val entitlement: EntitlementRepository,
 ) {
     private suspend fun locked() = !BlockingRules.canLoosen(blockSettings.settings.first(), System.currentTimeMillis())
 
     suspend fun setFeed(packageName: String, on: Boolean): Outcome {
+        if (on && !ProPolicy.hasFeature(ProFeature.SHORT_VIDEO_BLOCK, entitlement.isPro())) return Outcome.UPGRADE
         if (!on && locked()) return Outcome.DENIED_STRICT
         prefs.update { it.copy(feedPackages = if (on) it.feedPackages + packageName else it.feedPackages - packageName) }
         return Outcome.OK
     }
 
     suspend fun setWebsitesEnabled(on: Boolean): Outcome {
+        if (on && !ProPolicy.hasFeature(ProFeature.WEBSITE_BLOCK, entitlement.isPro())) return Outcome.UPGRADE
         if (!on && locked()) return Outcome.DENIED_STRICT
         prefs.update { it.copy(websitesEnabled = on) }
         return Outcome.OK

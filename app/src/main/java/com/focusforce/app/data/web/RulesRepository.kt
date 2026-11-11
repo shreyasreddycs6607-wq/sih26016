@@ -64,6 +64,12 @@ class RulesRepository @Inject constructor(
 
     private fun parseText(text: String): RulesConfig? = (RulesParser.parse(text) as? ParseResult.Ok)?.config
 
+    /** Forget imported/downloaded rules and go back to the bundled ones. */
+    suspend fun reset() = withContext(Dispatchers.IO) {
+        RulesSource.entries.filter { it != RulesSource.BUNDLED }.forEach { fileFor(it).delete() }
+        _rules.value = loadInitial()
+    }
+
     /** A rules file picked by the user. Same version is accepted (re-importing your own file is fine); older is not. */
     suspend fun importFromText(text: String): RulesUpdate = apply(text, RulesSource.IMPORTED, userPicked = true)
 

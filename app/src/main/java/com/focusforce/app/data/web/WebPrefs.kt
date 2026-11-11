@@ -71,5 +71,7 @@ class WebPrefs @Inject constructor(
         }
     }
 
+    suspend fun reset() { store.edit { it.clear() } }
+
     suspend fun setRulesCheckedAt(ms: Long) { store.edit { it[W.CHECKED_AT] = ms } }
 }

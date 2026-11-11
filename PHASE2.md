@@ -1,5 +1,7 @@
 # Phase 2: Tracking + Insights
 
+> **Update:** CI built this phase successfully. It has still never been run on a device.
+
 ## What exists
 
 - **Tracker:** `UsageStatsReader` reads UsageStatsManager events (package, activity class, timestamps only).

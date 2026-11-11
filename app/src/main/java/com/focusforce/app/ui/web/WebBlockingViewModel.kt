@@ -16,6 +16,7 @@ import com.focusforce.app.domain.repo.BlockSettingsRepository
 import com.focusforce.app.domain.rules.ParseResult
 import com.focusforce.app.domain.rules.RulesParser
 import com.focusforce.app.permissions.PermissionChecker
+import com.focusforce.app.ui.util.noticeRes
 import com.focusforce.app.permissions.PermissionKind
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -90,11 +91,7 @@ class WebBlockingViewModel @Inject constructor(
 
     private fun act(action: suspend () -> Outcome) {
         viewModelScope.launch {
-            when (action()) {
-                Outcome.DENIED_STRICT -> _notice.value = Notice(R.string.notice_strict_locked)
-                Outcome.INVALID -> _notice.value = Notice(R.string.web_notice_invalid_input)
-                else -> Unit
-            }
+            action().noticeRes()?.let { _notice.value = Notice(it) }
         }
     }
 

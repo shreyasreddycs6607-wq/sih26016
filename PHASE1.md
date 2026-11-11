@@ -1,5 +1,7 @@
 # Phase 1: Foundation + Onboarding
 
+> **Update:** CI later built this phase's code successfully (Phases 1-5 are all green in GitHub Actions). It has still never been run on a device.
+
 ## What exists
 
 - Gradle (Kotlin DSL + version catalog), Hilt, Navigation Compose with type-safe routes, DataStore, edge-to-edge single activity.

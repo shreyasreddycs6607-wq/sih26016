@@ -18,6 +18,7 @@ import com.focusforce.app.domain.schedule.SchedulePreset
 import com.focusforce.app.domain.schedule.SiteList
 import com.focusforce.app.ui.blocks.PickerBridge
 import com.focusforce.app.ui.nav.GroupEditor
+import com.focusforce.app.ui.util.noticeRes
 import com.focusforce.app.ui.nav.LimitEditor
 import com.focusforce.app.ui.nav.ScheduleEditor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +43,7 @@ abstract class EditorViewModel : ViewModel() {
     fun clearNotice() { _notice.value = null }
 
     protected fun handle(outcome: Outcome) {
-        if (outcome == Outcome.OK) _finished.value = true else _notice.value = R.string.notice_strict_locked
+        if (outcome == Outcome.OK) _finished.value = true else _notice.value = outcome.noticeRes() ?: R.string.notice_strict_locked
     }
 }
 

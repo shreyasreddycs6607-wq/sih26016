@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,6 +9,14 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+// Release signing: keystore.properties (git-ignored) or FOCUSFORCE_* environment variables. With neither, the release
+// build is simply left unsigned (CI builds it that way to check R8 and lint).
+val keystoreProps = Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+fun signingProp(name: String, env: String): String? = keystoreProps.getProperty(name) ?: System.getenv(env)
+
 android {
     namespace = "com.focusforce.app"
     compileSdk = 35
@@ -15,11 +25,23 @@ android {
         applicationId = "com.focusforce.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1.0-phase1"
+        versionCode = (project.findProperty("versionCode") as String?)?.toIntOrNull() ?: 1
+        versionName = (project.findProperty("versionName") as String?) ?: "0.7.0"
         vectorDrawables { useSupportLibrary = true }
         // HTTPS URL of a rules JSON for optional remote updates. Empty = no network use at all.
         buildConfigField("String", "RULES_URL", "\"\"")
+    }
+
+    signingConfigs {
+        create("release") {
+            val path = signingProp("storeFile", "FOCUSFORCE_STORE_FILE")
+            if (path != null) {
+                storeFile = rootProject.file(path)
+                storePassword = signingProp("storePassword", "FOCUSFORCE_STORE_PASSWORD")
+                keyAlias = signingProp("keyAlias", "FOCUSFORCE_KEY_ALIAS")
+                keyPassword = signingProp("keyPassword", "FOCUSFORCE_KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
@@ -30,6 +52,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release").takeIf { it.storeFile != null }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -98,6 +121,10 @@ dependencies {
     implementation(libs.androidx.credentials.play.services)
     implementation(libs.google.id)
     implementation(libs.kotlinx.coroutines.play.services)
+
+    implementation(libs.android.billing.ktx)
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.profileinstaller)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

@@ -16,6 +16,7 @@ import com.focusforce.app.domain.repo.FocusRepository
 import com.focusforce.app.domain.repo.PomodoroSessionRecord
 import com.focusforce.app.service.BlockerController
 import com.focusforce.app.service.PomodoroAlarmReceiver
+import com.focusforce.app.widget.WidgetUpdater
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -54,6 +55,7 @@ class PomodoroController @Inject constructor(
         BlockerController.ensureRunning(context)
         arm(run)
         environment.refresh()
+        WidgetUpdater.updateAll(context)
     }
 
     /** Joins a squad's shared focus block: same end moment as everyone else, then one break, then the set is over. */
@@ -65,6 +67,7 @@ class PomodoroController @Inject constructor(
         BlockerController.ensureRunning(context)
         arm(run)
         environment.refresh()
+        WidgetUpdater.updateAll(context)
         true
     }
 
@@ -81,6 +84,7 @@ class PomodoroController @Inject constructor(
         prefs.setPomodoroRun(null)
         cancel()
         environment.refresh()
+        WidgetUpdater.updateAll(context)
         Outcome.OK
     }
 
@@ -109,7 +113,14 @@ class PomodoroController @Inject constructor(
         }
         prefs.setPomodoroRun(next)
         environment.refresh()
+        WidgetUpdater.updateAll(context)
         if (next != null) arm(next) else cancel()
+    }
+
+    /** Used by "reset data": drops any running set and its alarm without recording history. */
+    suspend fun discardForReset() = mutex.withLock {
+        prefs.setPomodoroRun(null)
+        cancel()
     }
 
     /** Alarms do not survive a reboot: re-arm for the saved run (call at boot and app start). */

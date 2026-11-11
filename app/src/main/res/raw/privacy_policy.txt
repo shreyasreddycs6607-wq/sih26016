@@ -1,0 +1,43 @@
+# FocusForce privacy policy
+
+Draft, last updated 2026-11-11. This text describes what the app actually does. The app's owner must review it, host it at a public web address for the store listing, and add a contact address before release.
+
+## In short
+
+FocusForce works on your phone. By default nothing about you leaves it. There is no advertising, no analytics and no tracking in the app.
+
+## What the app looks at on your phone
+
+Usage access: the names of apps you open, how long each is on screen, how often you open them and how often you unlock your phone. This is read from Android's own usage statistics and kept only in the app's private database on your phone.
+
+Accessibility service: to show the block screen it learns which app or window has just come to the front (the app's package name and the window's class name). Only if you switch on blocking of short-video sections or websites, it also looks, for the apps and browsers you chose, at which interface elements are on screen (technical ids, never any text) and at the address bar of supported browsers, only to work out the site name. This is checked in memory for one decision and then dropped. It is not logged, stored or sent anywhere.
+
+Other permissions you may grant: display over other apps (the block screen), notifications, ignoring battery optimisation, exact alarms, Do Not Disturb access (to silence notifications during focus time, restored afterwards), and the list of installed apps (to show names and icons). Each one is explained before you are asked.
+
+## What is stored on your phone
+
+Your settings, hero choice, daily goal, the apps you guard, limits, schedules, focus history, usage history and the rules file. You can export your usage history and focus sessions to a CSV file you choose, and you can delete everything with Reset data in Settings.
+
+## What can leave your phone, and only if you use it
+
+Multiplayer (only in builds connected to it, and only after you sign in with Google): your display name, hero, rank, level, friend code, which squad you are in, whether you are in a focus block right now, and your weekly XP score. Nothing about your screen time, apps, websites or screen content is sent. This data is stored with Google Firebase. You can hide from leaderboards, stop sharing when you are focusing, leave a squad, and delete all of it, including the sign-in account, from the Privacy tab.
+
+Detection rules: if the build is set up for it, the app can download a small rules file once a day. The request carries no identifier and no information about you.
+
+Purchases: if you buy FocusForce Pro, Google Play handles the payment. The app only learns whether Pro is active.
+
+## Your choices
+
+You can revoke any permission in Android Settings at any time (blocking then stops working), turn features off, reset the app's data, delete your multiplayer data, or uninstall the app, which removes everything stored on your phone.
+
+## Children
+
+FocusForce is not directed at children under 13. Multiplayer requires a Google account.
+
+## Security
+
+Data stays in the app's private storage on your phone. Online data is protected by access rules that only let you change your own information. No system is perfectly secure.
+
+## Changes and contact
+
+If this policy changes, the new version will be shown in the app. Contact the developer through the details on the app's store page.

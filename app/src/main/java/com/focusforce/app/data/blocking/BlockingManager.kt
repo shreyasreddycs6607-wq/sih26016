@@ -1,6 +1,10 @@
 package com.focusforce.app.data.blocking
 
+import com.focusforce.app.data.billing.EntitlementRepository
 import com.focusforce.app.domain.blocking.BlockingRules
+import com.focusforce.app.domain.pro.Countable
+import com.focusforce.app.domain.pro.ProFeature
+import com.focusforce.app.domain.pro.ProPolicy
 import com.focusforce.app.domain.repo.BlockSettingsRepository
 import com.focusforce.app.domain.repo.BlockedAppsRepository
 import java.time.LocalDate
@@ -8,7 +12,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.first
 
-enum class Outcome { OK, DENIED_STRICT, NO_PASS, INVALID }
+/** UPGRADE = needs FocusForce Pro (or the free limit is reached). */
+enum class Outcome { OK, DENIED_STRICT, NO_PASS, INVALID, UPGRADE }
 
 /**
  * The only writer of blocking state. Every action that would loosen blocking goes through
@@ -18,6 +23,7 @@ enum class Outcome { OK, DENIED_STRICT, NO_PASS, INVALID }
 class BlockingManager @Inject constructor(
     private val settings: BlockSettingsRepository,
     private val apps: BlockedAppsRepository,
+    private val entitlement: EntitlementRepository,
 ) {
     suspend fun setEnabled(on: Boolean): Outcome {
         val s = settings.settings.first()
@@ -40,7 +46,14 @@ class BlockingManager @Inject constructor(
         return Outcome.OK
     }
 
-    suspend fun addApps(packages: Collection<String>) = apps.add(packages)
+    /** Adds as many as the free limit allows (all of them for Pro); UPGRADE if some were left out. */
+    suspend fun addApps(packages: Collection<String>): Outcome {
+        val current = apps.observe().first()
+        val fresh = packages.filter { it !in current }
+        val allowed = ProPolicy.allowedToAdd(Countable.GUARDED_APPS, current.size, fresh.size, entitlement.isPro())
+        if (allowed > 0) apps.add(fresh.take(allowed))
+        return if (allowed < fresh.size) Outcome.UPGRADE else Outcome.OK
+    }
 
     suspend fun removeApps(packages: Collection<String>): Outcome {
         val s = settings.settings.first()
@@ -50,9 +63,11 @@ class BlockingManager @Inject constructor(
     }
 
     /** Starts (or extends, never shortens) a strict lock and makes sure blocking is on. */
-    suspend fun startStrict(minutes: Int) {
+    suspend fun startStrict(minutes: Int): Outcome {
+        if (!ProPolicy.hasFeature(ProFeature.STRICT_LOCK, entitlement.isPro())) return Outcome.UPGRADE
         val now = System.currentTimeMillis()
         settings.update { it.copy(enabled = true, strictUntilMs = BlockingRules.strictUntil(it, now, minutes)) }
+        return Outcome.OK
     }
 
     suspend fun grantPass(packageName: String): Outcome {

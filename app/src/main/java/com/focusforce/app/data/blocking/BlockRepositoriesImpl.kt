@@ -71,6 +71,10 @@ class BlockSettingsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun reset() {
+        store.edit { it.clear() }
+    }
+
     override suspend fun updatePass(transform: (PassState) -> PassState) {
         store.edit { p ->
             val n = transform(p.toPassState())

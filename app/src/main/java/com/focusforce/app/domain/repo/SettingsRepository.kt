@@ -12,4 +12,7 @@ interface SettingsRepository {
     suspend fun setHero(hero: HeroTheme)
     suspend fun setGoals(goals: Set<FocusGoal>)
     suspend fun setDailyGoalMinutes(minutes: Int)
+
+    /** Back to a fresh install (onboarding shows again). */
+    suspend fun reset()
 }

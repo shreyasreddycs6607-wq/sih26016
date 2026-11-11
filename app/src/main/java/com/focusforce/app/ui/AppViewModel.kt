@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val repository: SettingsRepository,
+    @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
 ) : ViewModel() {
 
     val settings: StateFlow<UserSettings?> = repository.settings
@@ -28,7 +29,10 @@ class AppViewModel @Inject constructor(
     }
 
     fun setHero(hero: HeroTheme) {
-        viewModelScope.launch { repository.setHero(hero) }
+        viewModelScope.launch {
+            repository.setHero(hero)
+            com.focusforce.app.widget.WidgetUpdater.updateAll(context) // widgets are drawn in the hero's style
+        }
     }
 
     fun setDailyGoal(minutes: Int) {

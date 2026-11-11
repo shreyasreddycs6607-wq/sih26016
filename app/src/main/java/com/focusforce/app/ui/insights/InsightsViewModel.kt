@@ -64,7 +64,10 @@ class InsightsViewModel @Inject constructor(
     private val settings: SettingsRepository,
     private val permissions: PermissionChecker,
     private val appInfo: AppInfoProvider,
+    entitlement: com.focusforce.app.data.billing.EntitlementRepository,
 ) : ViewModel() {
+
+    val pro: StateFlow<Boolean> = entitlement.pro
 
     private val granted = MutableStateFlow(permissions.isGranted(PermissionKind.USAGE_ACCESS))
     private val period = MutableStateFlow(InsightsPeriod.WEEKLY)

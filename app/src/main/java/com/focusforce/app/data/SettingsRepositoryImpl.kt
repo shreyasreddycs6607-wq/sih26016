@@ -69,6 +69,10 @@ class SettingsRepositoryImpl @Inject constructor(
         store.edit { it[Keys.GOALS] = goals.map(FocusGoal::name).toSet() }
     }
 
+    override suspend fun reset() {
+        store.edit { it.clear() }
+    }
+
     override suspend fun setDailyGoalMinutes(minutes: Int) {
         store.edit { it[Keys.DAILY_GOAL] = DailyGoal.clamp(minutes) }
     }

@@ -1,6 +1,9 @@
 package com.focusforce.app.data.focus
 
+import com.focusforce.app.data.billing.EntitlementRepository
 import com.focusforce.app.data.blocking.Outcome
+import com.focusforce.app.domain.pro.Countable
+import com.focusforce.app.domain.pro.ProPolicy
 import com.focusforce.app.domain.blocking.BlockingRules
 import com.focusforce.app.domain.limits.AppGroup
 import com.focusforce.app.domain.limits.LimitRule
@@ -20,11 +23,13 @@ class FocusManager @Inject constructor(
     private val repository: FocusRepository,
     private val settings: BlockSettingsRepository,
     private val environment: FocusEnvironment,
+    private val entitlement: EntitlementRepository,
 ) {
     private suspend fun locked(): Boolean = !BlockingRules.canLoosen(settings.settings.first(), System.currentTimeMillis())
 
     suspend fun saveLimit(rule: LimitRule): Outcome {
         if (rule.id != 0L && locked()) return Outcome.DENIED_STRICT
+        if (rule.id == 0L && !ProPolicy.canAdd(Countable.USAGE_LIMITS, repository.observeLimits().first().size, entitlement.isPro())) return Outcome.UPGRADE
         repository.saveLimit(rule)
         return Outcome.OK
     }
@@ -49,6 +54,7 @@ class FocusManager @Inject constructor(
 
     suspend fun saveSchedule(schedule: FocusSchedule): Outcome {
         if (schedule.id != 0L && locked()) return Outcome.DENIED_STRICT
+        if (schedule.id == 0L && !ProPolicy.canAdd(Countable.SCHEDULES, repository.observeSchedules().first().size, entitlement.isPro())) return Outcome.UPGRADE
         repository.saveSchedule(schedule)
         environment.refresh()
         return Outcome.OK

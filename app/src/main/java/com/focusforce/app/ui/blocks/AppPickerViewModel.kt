@@ -13,6 +13,7 @@ import com.focusforce.app.domain.repo.BlockedAppsRepository
 import com.focusforce.app.domain.repo.UsageRepository
 import com.focusforce.app.domain.usage.AppCategory
 import com.focusforce.app.ui.nav.AppPicker
+import com.focusforce.app.ui.util.noticeRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -92,7 +93,7 @@ class AppPickerViewModel @Inject constructor(
             PickerBridge.MODE_SINGLE -> bridge.selection.value = setOf(app.packageName)
             PickerBridge.MODE_MULTI -> bridge.selection.update { if (app.packageName in it) it - app.packageName else it + app.packageName }
             else -> viewModelScope.launch {
-                if (app.selected) denyIfStrict(manager.removeApps(listOf(app.packageName))) else manager.addApps(listOf(app.packageName))
+                if (app.selected) denyIfStrict(manager.removeApps(listOf(app.packageName))) else denyIfStrict(manager.addApps(listOf(app.packageName)))
             }
         }
     }
@@ -106,11 +107,11 @@ class AppPickerViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            if (s.allShownSelected) denyIfStrict(manager.removeApps(shown)) else manager.addApps(shown)
+            if (s.allShownSelected) denyIfStrict(manager.removeApps(shown)) else denyIfStrict(manager.addApps(shown))
         }
     }
 
     private fun denyIfStrict(outcome: Outcome) {
-        if (outcome == Outcome.DENIED_STRICT) notice.value = R.string.notice_strict_locked
+        outcome.noticeRes()?.let { notice.value = it }
     }
 }

@@ -1,0 +1,21 @@
+# Hand-written baseline profile rules: pre-compile the code that runs at startup and on the main screens so first launch
+# and first scrolls are smooth. Wildcards keep it small. This is a coarse starting point: generate a measured profile with a
+# Macrobenchmark module on a real device and replace this file when you can (see PHASE7.md).
+HSPLcom/focusforce/app/MainActivity;->**(**)**
+HSPLcom/focusforce/app/FocusForceApp;->**(**)**
+HSPLcom/focusforce/app/ui/theme/**;->**(**)**
+HSPLcom/focusforce/app/ui/components/**;->**(**)**
+HSPLcom/focusforce/app/ui/art/**;->**(**)**
+HSPLcom/focusforce/app/ui/nav/**;->**(**)**
+HSPLcom/focusforce/app/ui/main/**;->**(**)**
+HSPLcom/focusforce/app/ui/onboarding/**;->**(**)**
+HSPLcom/focusforce/app/ui/insights/**;->**(**)**
+HSPLcom/focusforce/app/ui/blocks/**;->**(**)**
+HSPLcom/focusforce/app/ui/focus/**;->**(**)**
+HSPLcom/focusforce/app/domain/usage/**;->**(**)**
+HSPLcom/focusforce/app/domain/blocking/**;->**(**)**
+HSPLcom/focusforce/app/data/db/**;->**(**)**
+Lcom/focusforce/app/ui/theme/**;
+Lcom/focusforce/app/ui/components/**;
+Lcom/focusforce/app/ui/art/**;
+Lcom/focusforce/app/ui/main/**;

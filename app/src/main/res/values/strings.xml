@@ -594,4 +594,65 @@
     <string name="privacy_delete">Delete my data</string>
     <string name="privacy_delete_confirm">This cannot be undone.</string>
     <string name="privacy_delete_yes">Yes, delete everything</string>
+
+    <!-- Phase 7: settings, Pro, widgets, tile -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_appearance">Hero and theme</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_body">FocusForce is available in English. Android lets you choose a language for each app, so new translations will appear here as they are added.</string>
+    <string name="settings_language_open">Open app language settings</string>
+    <string name="settings_export">Export your data</string>
+    <string name="settings_export_body">Save your usage history or your focus sessions as a CSV file you can open in a spreadsheet. The file goes only where you choose to save it. A Pro feature.</string>
+    <string name="settings_export_usage">Export usage history</string>
+    <string name="settings_export_sessions">Export focus sessions</string>
+    <string name="settings_export_done">Saved.</string>
+    <string name="settings_export_failed">Could not save the file.</string>
+    <string name="settings_reset">Reset data</string>
+    <string name="settings_reset_body">Deletes everything FocusForce stored on this phone and starts over: history, guarded apps, limits, schedules, focus history and settings. Your multiplayer account is not affected. Not possible during a strict lock.</string>
+    <string name="settings_reset_button">Reset all data</string>
+    <string name="settings_reset_confirm">This cannot be undone.</string>
+    <string name="settings_reset_yes">Yes, reset everything</string>
+    <string name="settings_policy">Privacy policy</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="notice_pro_required">That needs FocusForce Pro, or you reached the free limit. Open Profile, Settings, then FocusForce Pro to see what is included.</string>
+    <string name="insights_monthly_pro">Monthly charts are part of FocusForce Pro. Daily and weekly charts stay free.</string>
+
+    <string name="pro_title">FocusForce Pro</string>
+    <string name="pro_active">FocusForce Pro is active. Thank you!</string>
+    <string name="pro_free_summary">You are on the free version: tracking, daily and weekly insights, basic blocking and the whole hero experience. Pro adds more.</string>
+    <string name="pro_see">See what Pro adds</string>
+    <string name="pro_manage">Manage Pro</string>
+    <string name="upgrade_free_title">Free</string>
+    <string name="upgrade_free_body">Screen-time tracking, daily and weekly insights, up to %1$d guarded apps, %2$d focus schedule, %3$d daily limits, Pomodoro, passes, widgets, ranks and the weekly leaderboard.</string>
+    <string name="upgrade_pro_title">Pro</string>
+    <string name="upgrade_pro_body">Unlimited guarded apps, schedules and limits. Strict lock. Short-video and website blocking. Monthly insights. Group focus sessions. CSV export of your data.</string>
+    <string name="upgrade_keep_note">If Pro ever ends, nothing you made is deleted: you simply cannot add beyond the free limits, and a strict lock already running finishes normally.</string>
+    <string name="upgrade_buy">Buy Pro</string>
+    <string name="upgrade_buy_price">Buy Pro for %1$s</string>
+    <string name="upgrade_restore">Restore purchase</string>
+    <string name="upgrade_restore_done">Checked your purchases with the store.</string>
+    <string name="upgrade_unavailable">The store is not available right now, so Pro cannot be bought here yet.</string>
+    <string name="upgrade_error">The purchase could not be started. Try again later.</string>
+    <string name="upgrade_fake_store">Debug build: this is a fake store. Buying costs nothing and is forgotten when the app restarts.</string>
+    <string name="upgrade_terms">One-time purchase, charged and managed by Google Play. You can ask Google Play for a refund within its refund window.</string>
+
+    <string name="widget_today_name">FocusForce: today</string>
+    <string name="widget_today_desc">Today\'s screen time against your goal, in your hero\'s style.</string>
+    <string name="widget_today_ring_description">%1$s used of a %2$s goal</string>
+    <string name="widget_today_goal">goal %1$s</string>
+    <string name="widget_today_waiting">Syncing…</string>
+    <string name="widget_quick_name">FocusForce: quick focus</string>
+    <string name="widget_quick_desc">Start or stop a Pomodoro focus set with one tap.</string>
+    <string name="widget_focus_ready">Ready to focus?</string>
+    <string name="widget_focus_until">Until %1$s</string>
+    <string name="widget_focus_start">Start focus</string>
+    <string name="widget_focus_stop">Stop</string>
+    <string name="widget_meter_name">FocusForce: power meter</string>
+    <string name="widget_meter_desc">Your streak of days under your goal.</string>
+    <string name="widget_meter_title">Power meter</string>
+    <string name="widget_meter_description">Streak power meter, %1$d days</string>
+    <string name="widget_meter_days">%1$d day streak</string>
+    <string name="tile_label">Focus</string>
+    <string name="tile_running">Running</string>
+    <string name="tile_idle">Tap to start</string>
 </resources>

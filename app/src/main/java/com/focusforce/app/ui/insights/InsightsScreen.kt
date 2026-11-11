@@ -46,10 +46,12 @@ fun InsightsScreen(
     onOpenApp: (String) -> Unit,
     onOpenCategories: () -> Unit,
     onOpenPermissions: () -> Unit,
+    onOpenUpgrade: () -> Unit,
     viewModel: InsightsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val period by viewModel.selectedPeriod.collectAsStateWithLifecycle()
+    val pro by viewModel.pro.collectAsStateWithLifecycle()
     RefreshWhileVisible { viewModel.refresh() }
     val c = FocusTheme.colors
     val periods = listOf(R.string.period_daily, R.string.period_weekly, R.string.period_monthly).map { stringResource(it) }
@@ -58,6 +60,16 @@ fun InsightsScreen(
         ScreenTitle(stringResource(R.string.tab_insights))
         FocusSegmented(periods, period.ordinal, { viewModel.setPeriod(InsightsPeriod.entries[it]) }, Modifier.fillMaxWidth())
 
+        if (period == InsightsPeriod.MONTHLY && !pro) {
+            FocusCard(Modifier.fillMaxWidth(), selected = true) {
+                SectionLabel(stringResource(R.string.pro_title))
+                Spacer(Modifier.height(FocusTheme.spacing.sm))
+                Text(stringResource(R.string.insights_monthly_pro), style = FocusTheme.typography.body, color = c.text)
+                Spacer(Modifier.height(FocusTheme.spacing.md))
+                FocusButton(stringResource(R.string.pro_see), onOpenUpgrade, Modifier.fillMaxWidth())
+            }
+            return@ContentColumn
+        }
         when (val s = state) {
             InsightsState.Loading -> {
                 ShimmerBox(Modifier.fillMaxWidth().height(220.dp))

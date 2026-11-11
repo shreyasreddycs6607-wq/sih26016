@@ -27,6 +27,7 @@ import com.focusforce.app.permissions.PermissionChecker
 import com.focusforce.app.permissions.PermissionKind
 import com.focusforce.app.ui.components.Moment
 import com.focusforce.app.ui.insights.todayFlow
+import com.focusforce.app.ui.util.noticeRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -196,6 +197,6 @@ class FocusViewModel @Inject constructor(
     }
 
     private fun denyIfStrict(action: suspend () -> Outcome) {
-        viewModelScope.launch { if (action() == Outcome.DENIED_STRICT) notice.value = R.string.notice_strict_locked }
+        viewModelScope.launch { action().noticeRes()?.let { notice.value = it } }
     }
 }

@@ -11,6 +11,7 @@ interface BlockSettingsRepository {
     /** Atomic read-modify-write. */
     suspend fun update(transform: (BlockSettings) -> BlockSettings)
     suspend fun updatePass(transform: (PassState) -> PassState)
+    suspend fun reset()
 }
 
 interface BlockedAppsRepository {
